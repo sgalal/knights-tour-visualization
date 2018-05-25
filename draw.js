@@ -30,7 +30,7 @@ function draw(n)  /* 棋盘 size */
 
     async function doDraw(n, pos, lastPos)
     {
-        var nextPos = Module.nextPoint(n,pos,lastPos);
+        var nextPos = Module.nextPoint(n, pos, lastPos);
         await new Promise((resolve) =>
         {
             setTimeout(resolve, 100);
