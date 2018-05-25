@@ -4,13 +4,10 @@
 #include <map>
 #include <utility>
 #include <algorithm>
-#include <emscripten/bind.h>
 
 using Grid = std::pair <int, int>;
 using Point = std::pair <int, int>;
 using Offset = std::pair <int, int>;
-
-using namespace emscripten;
 
 static std::pair <Grid, Point> localize(int n, Point pos)
 {
@@ -122,13 +119,4 @@ static int getFirst(Point p)
 static int getSecond(Point p)
 {
     return p.second;
-}
-
-EMSCRIPTEN_BINDINGS(my_module)
-{
-    class_ <Point> ("Point");
-    function("make_point", make_point);
-    function("getFirst", getFirst);
-    function("getSecond", getSecond);
-    function("nextPoint", nextPoint);
 }
