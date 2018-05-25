@@ -26,6 +26,7 @@
       {
         var c=document.getElementById('canvas');
         var ctx=c.getContext('2d');
+        ctx.clearRect(0,0,c.width,c.height);
 
         ctx.lineWidth=1;
 
@@ -55,13 +56,13 @@
         function doDraw(n,pos,lastPos){
           var nextPos=Module.nextPoint(n,pos,lastPos);
           if(nextPos!=Module.make_point(2,0)){
-            asyncDo(300,function(){
+            asyncDo(100,function(){
 
               ctx.beginPath();
               ctx.moveTo(edge*Module.getFirst(pos)+edge/2,edge*Module.getSecond(pos)+edge/2);
               ctx.lineTo(edge*Module.getFirst(nextPos)+edge/2,edge*Module.getSecond(nextPos)+edge/2);
               ctx.strokeStyle="#bf0628";
-              ctx.lineWidth=4;
+              ctx.lineWidth=3;
               ctx.stroke();
             
               doDraw(n,nextPos,pos);
@@ -74,7 +75,7 @@
     </script>
   </head>
   <body>
-    <p><b>Not</b> finished and it only supports the number 6 yet.</p>
+    <p><b>Not</b> finished and it only supports the number 6 and 8 yet.</p>
     <p>
       <textarea id='ta' cols='5'>6</textarea>
       <button type="button" onclick="draw(parseInt(getElementById('ta').value))">Start</button>
