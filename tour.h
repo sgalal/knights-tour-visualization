@@ -81,7 +81,7 @@ static const std::vector <std::vector <std::vector <unsigned int>>> Grid66 =
     {{2,3}/* 4 */, {1,3}, {1,0}, {3,0}/* 1 */, {0,2}, {0,1}}
 };
 
-static const std::vector <std::vector <std::vector <unsigned int>>> Grid68 =
+static const std::vector <std::vector <std::vector <unsigned int>>> Grid86 =
 {
     {{4,5}, {4,6}, {7,4}/* 5 */, {4,7}, {4,6}, {4,6}, {5,7}, {6,7}/* 8 */},
     {{3,4}/* 6 */, {3,6}, {6,0}, {0,4}, {0,3}, {0,3}, {0,5}, {0,7}},
@@ -103,7 +103,7 @@ static const std::vector <std::vector <std::vector <unsigned int>>> Grid88 =
     {{2,3}/* 4 */, {1,3}, {0,1}, {0,3}, {0,3}, {3,1}/* 1 */, {1,2}, {0,1}}
 };
 
-static const std::vector <std::vector <std::vector <unsigned int>>> Grid8_10 =
+static const std::vector <std::vector <std::vector <unsigned int>>> Grid10_8 =
 {
     {{4,5}, {4,6}, {7,4}/* 5 */, {4,7}, {4,7}, {6,7}, {4,7}, {4,7}, {5,7}, {6,7}/* 8 */},
     {{3,4}/* 6 */, {3,6}, {0,3}, {0,3}, {0,3}, {0,3}, {0,3}, {3,4}, {0,5}, {0,6}},
@@ -129,7 +129,7 @@ static const std::vector <std::vector <std::vector <unsigned int>>> Grid10_10 =
     {{2,3}/* 4 */, {1,2}, {0,3}, {1,3}, {0,3}, {0,2}, {0,3}, {3,2}/* 1 */, {0,2}, {0,1}}
 };
 
-static const std::vector <std::vector <std::vector <unsigned int>>> Grid10_12 =
+static const std::vector <std::vector <std::vector <unsigned int>>> Grid12_10 =
 {
     {{4,5}, {4,6}, {7,6}/* 5 */, {4,7}, {5,6}, {4,7}, {5,7}, {4,7}, {4,6}, {4,7}, {5,6}, {6,7}/* 8 */},
     {{3,5}/* 6 */, {3,6}, {0,7}, {0,3}, {3,6}, {0,3}, {6,7}, {0,3}, {5,6}, {0,3}, {0,5}, {0,6}},
@@ -146,11 +146,11 @@ static const std::vector <std::vector <std::vector <unsigned int>>> Grid10_12 =
 static const std::map <Grid, const std::vector <std::vector <std::vector <unsigned int>>> &> m =
 {
     {{6,6}, Grid66},
-    {{6,8}, Grid68},
+    {{8,6}, Grid86},
     {{8,8}, Grid88},
-    {{8,10}, Grid8_10},
+    {{10,8}, Grid10_8},
     {{10,10}, Grid10_10},
-    {{10,12}, Grid10_12}
+    {{12,10}, Grid12_10}
 };
 
 static Point nextPoint(int n, Point pos, Point lastPos)
@@ -160,27 +160,66 @@ static Point nextPoint(int n, Point pos, Point lastPos)
     JunctionalAngleType jat;
     std::tie(grid, point, jat) = localize(n, pos);
 
-    const std::vector <std::vector <std::vector <unsigned int>>> &gridy = m.at(grid);
-    const std::vector <unsigned int> &v = gridy[point.second][point.first];
-    Offset o1;
-    switch(jat)
+    Offset o1, o2;
+    Point newpoint1, newpoint2;
+    if(grid.first >= grid.second)
     {
-    case 0: o1 = d[v[0]]; break;
-    case 1: o1 = d[4]; break;
-    case 2: o1 = d[3]; break;
-    case 3: o1 = d[7]; break;
-    case 4: o1 = d[4]; break;
-    case 5: o1 = d[0]; break;
-    case 6: o1 = d[7]; break;
-    case 7: o1 = d[3]; break;
-    case 8: o1 = d[0]; break;
-    default: assert(0);
+        const std::vector <std::vector <std::vector <unsigned int>>> &gridy = m.at(grid);
+        const std::vector <unsigned int> &v = gridy[point.second][point.first];
+
+        int k;
+        switch(jat)
+        {
+        case 0: k = v[0]; break;
+        case 1: k = 4; break;
+        case 2: k = 3; break;
+        case 3: k = 7; break;
+        case 4: k = 4; break;
+        case 5: k = 0; break;
+        case 6: k = 7; break;
+        case 7: k = 3; break;
+        case 8: k = 0; break;
+        default: assert(0);
+        }
+
+        o1 = d[k];
+        o2 = d[v[1]];
+        newpoint1 = std::make_pair(pos.first+o1.first, pos.second+o1.second);
+        newpoint2 = std::make_pair(pos.first+o2.first, pos.second+o2.second);
     }
+    else
+    {
+        int t = grid.first;
+        grid.first = grid.second;
+        grid.second = t;
 
-    Offset o2 = d[v[1]];
-    Point newpoint1 = std::make_pair(pos.first+o1.first, pos.second+o1.second);
-    Point newpoint2 = std::make_pair(pos.first+o2.first, pos.second+o2.second);
+        t = point.first;
+        point.first = point.second;
+        point.second = t;
 
+        const std::vector <std::vector <std::vector <unsigned int>>> &gridy = m.at(grid);
+        const std::vector <unsigned int> &v = gridy[point.second][point.first];
+
+        int k;
+        switch(jat)
+        {
+        case 0: k = v[0]; break;
+        case 1: k = 4; break;
+        case 2: k = 3; break;
+        case 3: k = 7; break;
+        case 4: k = 4; break;
+        case 5: k = 0; break;
+        case 6: k = 7; break;
+        case 7: k = 3; break;
+        case 8: k = 0; break;
+        default: assert(0);
+        }
+
+        o1 = d[(9-k)%8];
+        o2 = d[(9-v[1])%8];
+        newpoint1 = std::make_pair(pos.first+o1.first, pos.second+o1.second);
+        newpoint2 = std::make_pair(pos.first+o2.first, pos.second+o2.second);
+    }
     if(lastPos == newpoint1) return newpoint2;
     else if(lastPos == newpoint2) return newpoint1;
     assert(0);

@@ -14,5 +14,6 @@ int main()
     assert(std::get <0> (localize(14, std::make_pair(7,3))) == std::make_pair(8,6));
     assert(std::get <1> (localize(14, std::make_pair(7,3))) == std::make_pair(1,3));
     assert(nextPoint(14, make_point(7,3), make_point(5,4)) == std::make_pair(8,1));
+    assert(nextPoint(14, make_point(4,8), make_point(6,7)) == std::make_pair(3,10));
     return 0;
 }
