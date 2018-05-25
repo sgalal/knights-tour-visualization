@@ -11,14 +11,17 @@
       #canvas{
         margin: 10px;
         padding: 10px;
-        background: #ffffff;
+        background: transparent;
         border: thin inset #aaaaaa;
       }
-      textarea.fixed{
+      textarea{
+        resize: none;
+      }
+      textarea.ronly{
         border: 0px solid;
         background-color: transparent;
-        resize: none;
-        font-family: Times, "Times New Roman", serif;
+        text-align: center;
+        font-family: "Times New Roman", serif;
       }
     </style>
     <script src='tour.js'></script>
@@ -26,25 +29,45 @@
     <script>
       function doCalc()
       {
-        var i = parseInt(document.getElementById('sizeparam').value);
-        document.getElementById('sizeres').value = 2 * i + '*' + 2 * i;
+        var i = 2 * parseInt(document.getElementById('sizeparam').value);
+        document.getElementById('sizeres').value = i + ' * ' + i;
+        drawBoard(i);
       }
     </script>
   </head>
-  <body>
+  <body onload='doCalc()'>
     <h1>Knight's Tour Visualization</h1>
-    <p><i>Knight's tour visualization in C++ and JavaScript using <b>divide and conquer</b> algorithm.</i></p>
     <p>
-      Board size: 
-      <textarea id='sizeparam' rows='1' cols='5' onkeyup='doCalc()'>7</textarea>
-      The board size would be set as <textarea id='sizeres' rows='1' cols='5' class='fixed' readonly='readonly'>14*14</textarea>.
+      <i>
+        Knight's tour visualization in C++ and JavaScript using 
+        <b>divide and conquer</b> 
+        algorithm.
+      </i>
     </p>
     <p>
-      Time of a stroke(ms):
-      <textarea id='ta2' rows='1' cols='5'>100</textarea>
-      <button type="button" onclick="draw(2 * parseInt(getElementById('sizeparam').value), parseInt(getElementById('ta2').value))">Start</button>
+      Half of the board size: 
+      <textarea id='sizeparam' rows='1' cols='8' onkeyup='doCalc()'>7</textarea>
+      . (The board size would be set as 
+      <textarea id='sizeres' rows='1' cols='8' class='ronly' readonly='readonly'></textarea>
+      ).
+    </p>
+    <p>
+      Time of a stroke(ms): 
+      <textarea id='stroketime' rows='1' cols='8'>50</textarea>
+      <button type="button" onclick="draw(2 * parseInt(getElementById('sizeparam').value), parseInt(getElementById('stroketime').value))">Start</button>
+    </p>
+    <p>
+      <i>
+        Tips: An n*n chessboard has a 
+        <b>closed knight's tour</b>
+        iff n ≥ 6 is even.</i>
     </p>
     <canvas id='canvas' width='500' height='500'>Canvas not supported</canvas>
-    <p>View code on <a href='https://github.com/chromezh/knights-tour-visualization'>GitHub</a>.</p>
+    <p>
+      View code on 
+      <a href='https://github.com/chromezh/knights-tour-visualization'>GitHub</a>
+      .
+    </p>
+    <p>Author: chromezh</p>
   </body>
 </html>

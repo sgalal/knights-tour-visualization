@@ -71,7 +71,7 @@ static const std::array <const Offset, 8> d =
     Offset(-1, 2), Offset(-2, 1)
 };
 
-static const std::vector <std::vector <std::vector <unsigned int>>> Grid66 =
+static const std::vector <std::vector <std::array <unsigned int, 2>>> Grid66 =
 {
     {{4,5}, {5,6}, {4,7}, {4,7}, {5,7}, {6,7}},
     {{3,4}, {3,6}, {0,3}, {3,5}, {0,6}, {0,7}},
@@ -81,7 +81,7 @@ static const std::vector <std::vector <std::vector <unsigned int>>> Grid66 =
     {{2,3}, {1,3}, {1,0}, {3,0}, {0,2}, {0,1}}
 };
 
-static const std::vector <std::vector <std::vector <unsigned int>>> Grid86 =
+static const std::vector <std::vector <std::array <unsigned int, 2>>> Grid86 =
 {
     {{4,5}, {4,6}, {4,7}, {4,7}, {4,6}, {4,6}, {5,7}, {6,7}},
     {{3,4}, {3,6}, {6,0}, {0,4}, {0,3}, {0,3}, {0,5}, {0,7}},
@@ -91,7 +91,7 @@ static const std::vector <std::vector <std::vector <unsigned int>>> Grid86 =
     {{2,3}, {1,2}, {0,2}, {0,2}, {2,3}, {0,3}, {1,2}, {0,1}}
 };
 
-static const std::vector <std::vector <std::vector <unsigned int>>> Grid88 =
+static const std::vector <std::vector <std::array <unsigned int, 2>>> Grid88 =
 {
     {{4,5}, {5,6}, {5,7}, {4,7}, {5,7}, {4,7}, {5,7}, {6,7}},
     {{3,5}, {3,6}, {0,3}, {3,6}, {3,6}, {0,3}, {5,6}, {0,7}},
@@ -103,7 +103,7 @@ static const std::vector <std::vector <std::vector <unsigned int>>> Grid88 =
     {{2,3}, {1,3}, {0,1}, {0,3}, {0,3}, {1,3}, {1,2}, {0,1}}
 };
 
-static const std::vector <std::vector <std::vector <unsigned int>>> Grid10_8 =
+static const std::vector <std::vector <std::array <unsigned int, 2>>> Grid10_8 =
 {
     {{4,5}, {4,6}, {4,7}, {4,7}, {4,7}, {6,7}, {4,7}, {4,7}, {5,7}, {6,7}},
     {{3,4}, {3,6}, {0,3}, {0,3}, {0,3}, {0,3}, {0,3}, {3,4}, {0,5}, {0,6}},
@@ -115,7 +115,7 @@ static const std::vector <std::vector <std::vector <unsigned int>>> Grid10_8 =
     {{2,3}, {1,3}, {0,2}, {0,3}, {0,3}, {1,3}, {0,3}, {0,3}, {1,2}, {0,1}}
 };
 
-static const std::vector <std::vector <std::vector <unsigned int>>> Grid10_10 =
+static const std::vector <std::vector <std::array <unsigned int, 2>>> Grid10_10 =
 {
     {{4,5}, {4,6}, {5,7}, {4,6}, {4,7}, {6,7}, {5,7}, {4,7}, {5,7}, {6,7}},
     {{3,4}, {4,6}, {0,3}, {0,3}, {3,5}, {0,3}, {0,3}, {3,4}, {5,6}, {6,0}},
@@ -129,7 +129,7 @@ static const std::vector <std::vector <std::vector <unsigned int>>> Grid10_10 =
     {{2,3}, {1,2}, {0,3}, {1,3}, {0,3}, {0,2}, {0,3}, {2,3}, {0,2}, {0,1}}
 };
 
-static const std::vector <std::vector <std::vector <unsigned int>>> Grid12_10 =
+static const std::vector <std::vector <std::array <unsigned int, 2>>> Grid12_10 =
 {
     {{4,5}, {4,6}, {6,7}, {4,7}, {5,6}, {4,7}, {5,7}, {4,7}, {4,6}, {4,7}, {5,6}, {6,7}},
     {{3,5}, {3,6}, {0,7}, {0,3}, {3,6}, {0,3}, {6,7}, {0,3}, {5,6}, {0,3}, {0,5}, {0,6}},
@@ -143,7 +143,7 @@ static const std::vector <std::vector <std::vector <unsigned int>>> Grid12_10 =
     {{2,3}, {1,3}, {0,1}, {0,3}, {0,2}, {0,3}, {1,3}, {0,3}, {0,1}, {0,3}, {0,2}, {0,1}}
 };
 
-static const std::map <Grid, const std::vector <std::vector <std::vector <unsigned int>>> &> m =
+static const std::map <Grid, const std::vector <std::vector <std::array <unsigned int, 2>>> &> m =
 {
     {{6,6}, Grid66},
     {{8,6}, Grid86},
@@ -175,7 +175,7 @@ static Point nextPoint(int n, Point pos, Point lastPos)
         flag = true;
     }
 
-    const std::vector <unsigned int> &v = m.at(grid)[point.second][point.first];
+    const std::array <unsigned int, 2> &v = m.at(grid)[point.second][point.first];
 
     unsigned int h0 = v[0];
     unsigned int h1 = v[1];
