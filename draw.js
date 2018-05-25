@@ -8,7 +8,7 @@ function draw(n, ns)
     ctx.lineWidth = 1;
     var x, y;
     var len = 500;
-    var edge = len/n;
+    var edge = len/(n-1);
 
     async function doDraw(n, pos, lastPos)
     {
@@ -18,10 +18,10 @@ function draw(n, ns)
             setTimeout(resolve, ns);
         });
 
-        var beginX = edge*Module.getFirst(pos) + edge/2;
-        var beginY = edge*Module.getSecond(pos) + edge/2;
-        var endX = edge*Module.getFirst(nextPos) + edge/2;
-        var endY = edge*Module.getSecond(nextPos) + edge/2;
+        var beginX = edge*Module.getFirst(pos);
+        var beginY = edge*Module.getSecond(pos);
+        var endX = edge*Module.getFirst(nextPos);
+        var endY = edge*Module.getSecond(nextPos);
 
         ctx.beginPath();
         ctx.moveTo(beginX, beginY);
@@ -34,7 +34,7 @@ function draw(n, ns)
         ctx.closePath();
 
         ctx.beginPath();
-        ctx.arc(endX, endY, 2, 0, 360, false);
+        ctx.arc(endX, endY, 3, 0, 360, false);
         ctx.fillStyle = 'blue';
         ctx.fill();
         ctx.closePath();

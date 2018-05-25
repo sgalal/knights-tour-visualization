@@ -11,10 +11,10 @@ function drawBoard(n)
     ctx.lineWidth = 1;
     var x, y;
     var len = 500;
-    var edge = len / n;
+    var edge = len/(n-1);
 
     x = y = 0;
-    for(var i = 0; i <= n; i++)
+    for(var i = 0; i < n; i++)
     {
         ctx.beginPath();
         ctx.strokeStyle = 'black';
@@ -25,7 +25,7 @@ function drawBoard(n)
         y += edge;
     }
     x = y = 0;
-    for(var i = 0; i <= n; i++)
+    for(var i = 0; i < n; i++)
     {
         ctx.beginPath();
         ctx.strokeStyle = 'black';
@@ -51,8 +51,8 @@ function drawWrapper()
 
 function checkEnter(e)
 {
-    var et = e||window.event;
-    var keycode = et.charCode||et.keyCode;
+    var et = e || window.event;
+    var keycode = et.charCode || et.keyCode;
     if(keycode == 13)
     {
         if(window.event)
