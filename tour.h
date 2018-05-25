@@ -160,34 +160,9 @@ static Point nextPoint(int n, Point pos, Point lastPos)
     JunctionalAngleType jat;
     std::tie(grid, point, jat) = localize(n, pos);
 
-    Offset o1, o2;
-    Point newpoint1, newpoint2;
-    if(grid.first >= grid.second)
-    {
-        const std::vector <std::vector <std::vector <unsigned int>>> &gridy = m.at(grid);
-        const std::vector <unsigned int> &v = gridy[point.second][point.first];
+    bool flag = false;
 
-        int k;
-        switch(jat)
-        {
-        case 0: k = v[0]; break;
-        case 1: k = 4; break;
-        case 2: k = 3; break;
-        case 3: k = 7; break;
-        case 4: k = 4; break;
-        case 5: k = 0; break;
-        case 6: k = 7; break;
-        case 7: k = 3; break;
-        case 8: k = 0; break;
-        default: assert(0);
-        }
-
-        o1 = d[k];
-        o2 = d[v[1]];
-        newpoint1 = std::make_pair(pos.first+o1.first, pos.second+o1.second);
-        newpoint2 = std::make_pair(pos.first+o2.first, pos.second+o2.second);
-    }
-    else
+    if(grid.first < grid.second)
     {
         int t = grid.first;
         grid.first = grid.second;
@@ -197,31 +172,90 @@ static Point nextPoint(int n, Point pos, Point lastPos)
         point.first = point.second;
         point.second = t;
 
-        const std::vector <std::vector <std::vector <unsigned int>>> &gridy = m.at(grid);
-        const std::vector <unsigned int> &v = gridy[point.second][point.first];
-
-        int k;
-        switch(jat)
-        {
-        case 0: k = v[0]; break;
-        case 1: k = 4; break;
-        case 2: k = 3; break;
-        case 3: k = 7; break;
-        case 4: k = 4; break;
-        case 5: k = 0; break;
-        case 6: k = 7; break;
-        case 7: k = 3; break;
-        case 8: k = 0; break;
-        default: assert(0);
-        }
-
-        o1 = d[(9-k)%8];
-        o2 = d[(9-v[1])%8];
-        newpoint1 = std::make_pair(pos.first+o1.first, pos.second+o1.second);
-        newpoint2 = std::make_pair(pos.first+o2.first, pos.second+o2.second);
+        flag = true;
     }
-    if(lastPos == newpoint1) return newpoint2;
-    else if(lastPos == newpoint2) return newpoint1;
+
+    const std::vector <unsigned int> &v = m.at(grid)[point.second][point.first];
+
+    unsigned int h0 = v[0];
+    unsigned int h1 = v[1];
+
+    if(flag)
+    {
+        h0 = (9-h0)%8;
+        h1 = (9-h1)%8;
+    }
+
+    switch(jat)
+    {
+        case 0: break;
+        case 1:
+        {
+            if(h0 == 3) h0 = 4;
+            else if(h1 == 3) h1 = 4;
+            else assert(0);
+            break;
+        }
+        case 2:
+        {
+            if(h0 == 7) h0 = 3;
+            else if(h1 == 7) h1 = 3;
+            else assert(0);
+            break;
+        }
+        case 3:
+        {
+            if(h0 == 6) h0 = 7;
+            else if(h1 == 6) h1 = 7;
+            else assert(0);
+            break;
+        }
+        case 4:
+        {
+            if(h0 == 2) h0 = 4;
+            else if(h1 == 2) h1 = 4;
+            else assert(0);
+            break;
+        }
+        case 5:
+        {
+            if(h0 == 7) h0 = 0;
+            else if(h1 == 7) h1 = 0;
+            else assert(0);
+            break;
+        }
+        case 6:
+        {
+            if(h0 == 3) h0 = 7;
+            else if(h1 == 3) h1 = 7;
+            else assert(0);
+            break;
+        }
+        case 7:
+        {
+            if(h0 == 2) h0 = 3;
+            else if(h1 == 2) h1 = 3;
+            else assert(0);
+            break;
+        }
+        case 8:
+        {
+            if(h0 == 6) h0 = 0;
+            else if(h1 == 6) h1 = 0;
+            else assert(0);
+            break;
+        }
+        default: assert(0);
+    }
+
+    Offset o0 = d[h0];
+    Offset o1 = d[h1];
+
+    Point newpoint0 = std::make_pair(pos.first+o0.first, pos.second+o0.second);
+    Point newpoint1 = std::make_pair(pos.first+o1.first, pos.second+o1.second);
+
+    if(lastPos == newpoint0) return newpoint1;
+    else if(lastPos == newpoint1) return newpoint0;
     assert(0);
 }
 
