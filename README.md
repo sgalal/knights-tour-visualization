@@ -1,4 +1,3 @@
-# knights-tour-visualization
-Knight's tour visualization in C++ and JavaScript
+# Knight's Tour Visualization
 
-**Not** finished and it only supports numbers like 6, 8, 10, 14 and 24 yet.
+_Knight's tour visualization in C++ and JavaScript using divide and conquer algorithm._
