@@ -1,8 +1,10 @@
-function draw(n)  /* 棋盘 size */
+/// @param n board size
+/// @param ns sleep time after drawing a line, in nanosecond
+function draw(n, ns)
 {
     var c = document.getElementById('canvas');
     var ctx = c.getContext('2d');
-    ctx.clearRect(0, 0, c.width, c.height);
+    c.height = c.height;  // Resize to force clear the canvas
 
     ctx.lineWidth = 1;
     var x, y;
@@ -33,7 +35,7 @@ function draw(n)  /* 棋盘 size */
         var nextPos = Module.nextPoint(n, pos, lastPos);
         await new Promise((resolve) =>
         {
-            setTimeout(resolve, 100);
+            setTimeout(resolve, ns);
         });
         ctx.beginPath();
         ctx.moveTo(edge*Module.getFirst(pos) + edge/2, edge*Module.getSecond(pos) + edge/2);

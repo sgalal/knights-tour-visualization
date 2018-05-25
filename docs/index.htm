@@ -6,6 +6,7 @@
     <style>
       body{
         background: #dddddd;
+        font-family: "Times New Roman", serif;
       }
       #canvas{
         margin: 10px;
@@ -13,16 +14,37 @@
         background: #ffffff;
         border: thin inset #aaaaaa;
       }
+      textarea.fixed{
+        border: 0px solid;
+        background-color: transparent;
+        resize: none;
+        font-family: Times, "Times New Roman", serif;
+      }
     </style>
     <script src='tour.js'></script>
     <script src='draw.js'></script>
+    <script>
+      function doCalc()
+      {
+        var i = parseInt(document.getElementById('sizeparam').value);
+        document.getElementById('sizeres').value = 2 * i + '*' + 2 * i;
+      }
+    </script>
   </head>
   <body>
-    <p><b>Not</b> finished and it only supports numbers like 6, 8, 10 and 24 yet.</p>
+    <h1>Knight's Tour Visualization</h1>
+    <p><i>Knight's tour visualization in C++ and JavaScript using <b>divide and conquer</b> algorithm.</i></p>
     <p>
-      <textarea id='ta' cols='5'>6</textarea>
-      <button type="button" onclick="draw(parseInt(getElementById('ta').value))">Start</button>
+      Board size: 
+      <textarea id='sizeparam' rows='1' cols='5' onkeyup='doCalc()'>7</textarea>
+      The board size would be set as <textarea id='sizeres' rows='1' cols='5' class='fixed' readonly='readonly'>14*14</textarea>.
+    </p>
+    <p>
+      Time of a stroke(ms):
+      <textarea id='ta2' rows='1' cols='5'>100</textarea>
+      <button type="button" onclick="draw(2 * parseInt(getElementById('sizeparam').value), parseInt(getElementById('ta2').value))">Start</button>
     </p>
     <canvas id='canvas' width='500' height='500'>Canvas not supported</canvas>
+    <p>View code on <a href='https://github.com/chromezh/knights-tour-visualization'>GitHub</a>.</p>
   </body>
 </html>
