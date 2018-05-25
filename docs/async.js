@@ -1,8 +1,1 @@
-async function sleepDo(ns, f)
-{
-    await new Promise((resolve) =>
-    {
-        setTimeout(resolve, ns);
-    });
-    f();
-}
+async function sleepDo(ns, f){await new Promise(function(resolve){setTimeout(resolve, ns);});f();}
