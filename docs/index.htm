@@ -16,7 +16,7 @@
     </style>
     <script src='tour.js'></script>
     <script>
-      async function asyncDo(ms,f){
+      async function waitAndDo(ms,f){
         await new Promise((resolve)=>{
           setTimeout(resolve,ms);
         });
@@ -56,13 +56,13 @@
         function doDraw(n,pos,lastPos){
           var nextPos=Module.nextPoint(n,pos,lastPos);
           if(nextPos!=Module.make_point(2,0)){
-            asyncDo(100,function(){
+            waitAndDo(100,function(){
 
               ctx.beginPath();
               ctx.moveTo(edge*Module.getFirst(pos)+edge/2,edge*Module.getSecond(pos)+edge/2);
               ctx.lineTo(edge*Module.getFirst(nextPos)+edge/2,edge*Module.getSecond(nextPos)+edge/2);
               ctx.strokeStyle="#bf0628";
-              ctx.lineWidth=3;
+              ctx.lineWidth=2;
               ctx.stroke();
             
               doDraw(n,nextPos,pos);

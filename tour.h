@@ -3,13 +3,15 @@
 #include <vector>
 #include <map>
 #include <utility>
+#include <tuple>
 #include <algorithm>
 
 using Grid = std::pair <int, int>;
 using Point = std::pair <int, int>;
 using Offset = std::pair <int, int>;
+using JunctionalAngleType = unsigned int;
 
-static std::pair <Grid, Point> localize(int n, Point pos)
+static std::tuple <Grid, Point, JunctionalAngleType> localize(int n, Point pos)
 {
     int gridx = n;
     int gridy = n;
@@ -33,35 +35,24 @@ static std::pair <Grid, Point> localize(int n, Point pos)
         }
     };
 
-    while((std::min(gridx, gridy) > 10) ||
-           (std::max(gridx, gridy) > 12))
+    while(std::min(gridx, gridy) > 10 ||
+          std::max(gridx, gridy) > 12)
     {
         process(gridx, x);
         process(gridy, y);
     }
 
-    return std::make_pair(std::make_pair(gridx, gridy), std::make_pair(x, y));
+    JunctionalAngleType jat = 0;
+
+    return std::make_tuple(std::make_pair(gridx, gridy), std::make_pair(x, y), jat);
 }
 
-static bool atEdge(int n, Point pos, std::pair <Grid, Point> grid)
+static const std::array <const Offset, 8> d =
 {
-    return (pos.first != 0 && pos.first != n-1 && pos.second != 0 && pos.second != n-1) &&
-            (((grid.second.first == 0 || grid.second.first == grid.first.first-1) &&
-              (grid.second.second < 3 || grid.second.second >= grid.first.second-3)) ||
-             ((grid.second.second == 0 || grid.second.second == grid.first.second-1) &&
-              (grid.second.first < 3 || grid.second.first >= grid.first.first-3)));
-}
-
-static const std::array <const Offset *, 8> d =
-{
-    new Offset(-2,-1),
-    new Offset(-1,-2),
-    new Offset(1,-2),
-    new Offset(2,-1),
-    new Offset(2,1),
-    new Offset(1,2),
-    new Offset(-1,2),
-    new Offset(-2,1)
+    Offset(-2,-1), Offset(-1,-2),
+    Offset( 1,-2), Offset( 2,-1),
+    Offset( 2, 1), Offset( 1, 2),
+    Offset(-1, 2), Offset(-2, 1)
 };
 
 static const std::vector <std::vector <std::vector <unsigned int>>> Grid66 =
@@ -72,6 +63,16 @@ static const std::vector <std::vector <std::vector <unsigned int>>> Grid66 =
     {{2,5}, {6,5}, {7,4}, {0,2}, {1,5}, {0,6}},
     {{3,4}, {1,4}, {7,4}, {7,4}, {0,2}, {1,7}},
     {{2,3}, {1,3}, {1,0}, {0,3}, {0,2}, {1,0}}
+};
+
+static const std::vector <std::vector <std::vector <unsigned int>>> Grid68 =
+{
+    {{4,5}, {4,6}, {4,7}, {4,7}, {4,6}, {4,6}, {5,7}, {6,7}},
+    {{3,4}, {3,6}, {6,0}, {0,4}, {0,3}, {0,3}, {0,5}, {0,7}},
+    {{2,5}, {1,4}, {0,5}, {2,5}, {2,5}, {0,3}, {2,5}, {1,6}},
+    {{2,5}, {2,6}, {6,7}, {0,6}, {6,7}, {5,6}, {5,7}, {1,6}},
+    {{3,4}, {1,4}, {3,7}, {1,4}, {1,3}, {1,4}, {2,7}, {1,7}},
+    {{2,3}, {1,2}, {0,2}, {0,2}, {2,3}, {0,3}, {1,2}, {0,1}}
 };
 
 static const std::vector <std::vector <std::vector <unsigned int>>> Grid88 =
@@ -86,24 +87,51 @@ static const std::vector <std::vector <std::vector <unsigned int>>> Grid88 =
     {{2,3}, {1,3}, {0,1}, {0,3}, {0,3}, {1,3}, {1,2}, {1,0}}
 };
 
+static const std::vector <std::vector <std::vector <unsigned int>>> Grid10_10 =
+{
+    {{4,5}, {4,6}, {5,7}, {4,6}, {4,7}, {6,7}, {5,7}, {4,7}, {5,7}, {6,7}},
+    {{3,4}, {4,6}, {0,3}, {0,3}, {3,5}, {0,3}, {0,3}, {3,4}, {5,6}, {6,0}},
+    {{2,4}, {1,6}, {0,2}, {0,1}, {2,4}, {6,7}, {5,6}, {1,6}, {2,5}, {0,1}},
+    {{2,4}, {5,6}, {0,6}, {3,5}, {4,5}, {1,4}, {0,4}, {2,6}, {2,5}, {1,6}},
+    {{2,5}, {4,5}, {0,7}, {4,5}, {2,6}, {2,5}, {0,2}, {0,1}, {0,6}, {1,6}},
+    {{2,3}, {2,6}, {1,7}, {0,5}, {1,7}, {0,1}, {2,6}, {6,7}, {2,6}, {1,7}},
+    {{3,5}, {1,6}, {1,3}, {2,7}, {1,5}, {3,7}, {1,7}, {2,3}, {2,5}, {6,7}},
+    {{2,5}, {3,6}, {5,6}, {3,7}, {1,3}, {2,7}, {2,6}, {2,3}, {5,6}, {6,7}},
+    {{2,4}, {1,3}, {4,7}, {3,4}, {4,7}, {1,7}, {4,7}, {3,4}, {2,7}, {1,7}},
+    {{2,3}, {1,2}, {0,3}, {1,3}, {0,3}, {0,2}, {0,3}, {2,3}, {0,2}, {0,1}}
+};
+
 static const std::map <Grid, const std::vector <std::vector <std::vector <unsigned int>>> &> m =
 {
     {{6,6}, Grid66},
-    {{8,8}, Grid88}
+    {{6,8}, Grid68},
+    {{8,8}, Grid88},
+    {{10,10}, Grid10_10}
 };
 
 static Point nextPoint(int n, Point pos, Point lastPos)
 {
-    std::pair <Grid, Point> ret = localize(n, pos);
-    const std::vector <std::vector <std::vector <unsigned int>>> &grid = m.at(ret.first);
-    const std::vector <unsigned int> &v = grid[ret.second.second][ret.second.first];
-    const Offset *o1 = d[v[0]];
-    const Offset *o2 = atEdge(n, pos, ret) ? d[v[2]] : d[v[1]];
-    Point newpoint1 = std::make_pair(pos.first+o1->first, pos.second+o1->second);
-    Point newpoint2 = std::make_pair(pos.first+o2->first, pos.second+o2->second);
-    if(lastPos == newpoint1) return newpoint2;
-    else if(lastPos == newpoint2) return newpoint1;
-    assert(0);
+    Grid grid;
+    Point point;
+    JunctionalAngleType jat;
+    std::tie(grid, point, jat) = localize(n, pos);
+
+    const std::vector <std::vector <std::vector <unsigned int>>> &gridy = m.at(grid);
+    const std::vector <unsigned int> &v = gridy[point.second][point.first];
+    const Offset &o1 = d[v[0]];
+    const Offset &o2 = d[v[1]];
+    Point newpoint1 = std::make_pair(pos.first+o1.first, pos.second+o1.second);
+    Point newpoint2 = std::make_pair(pos.first+o2.first, pos.second+o2.second);
+    if(jat)
+    {
+        assert(0);
+    }
+    else
+    {
+        if(lastPos == newpoint1) return newpoint2;
+        else if(lastPos == newpoint2) return newpoint1;
+        assert(0);
+    }
 }
 
 static Point make_point(int x, int y)
