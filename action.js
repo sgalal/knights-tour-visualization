@@ -1,3 +1,5 @@
+/// Draw the chess board.
+/// @param n board size
 function drawBoard(n)
 {
     var c = document.getElementById('canvas');
@@ -45,7 +47,6 @@ function draw(n, ms)
     var ctx = c.getContext('2d');
 
     ctx.lineWidth = 1;
-    var x, y;
     var len = 500;
     var edge = len/(n-1);
 

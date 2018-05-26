@@ -13,7 +13,7 @@ cp-only : index.htm async.js action.js
 	uglifyjs action.js -o docs/action.js
 
 test : tour.h tour_tb.cpp
-	clang++ tour_tb.cpp -Wall -std=gnu++14 -o tour.exe --target=$(TB_BUILD_TARGET)
+	clang++ tour_tb.cpp -Weverything -std=gnu++14 -o tour.exe -Wno-c++98-compat -Wno-global-constructors -Wno-exit-time-destructors --target=$(TB_BUILD_TARGET)
 	./tour
 
 clean :
