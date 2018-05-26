@@ -7,6 +7,11 @@ default : tour.h tour_gen.cpp index.htm async.js action.js
 	cp async.js docs/async.js
 	uglifyjs action.js -o docs/action.js
 
+cp-only : index.htm async.js action.js
+	cp index.htm docs/index.htm
+	cp async.js docs/async.js
+	uglifyjs action.js -o docs/action.js
+
 test : tour.h tour_tb.cpp
 	clang++ tour_tb.cpp -Wall -std=gnu++14 -o tour.exe --target=$(TB_BUILD_TARGET)
 	./tour
