@@ -3,65 +3,11 @@
 #include <vector>
 #include <map>
 #include <utility>
-#include <tuple>
-#include <algorithm>
 
 using Grid = std::pair <int, int>;
 using Point = std::pair <int, int>;
 using Offset = std::pair <int, int>;
 using JunctionalAngleType = unsigned int;
-
-static std::tuple <Grid, Point, JunctionalAngleType> localize(int n, Point pos)
-{
-    int gridx = n;
-    int gridy = n;
-    int x = pos.first;
-    int y = pos.second;
-
-    int blockChoiceX = 0;
-    int blockChoiceY = 0;
-
-    JunctionalAngleType jat = 0;
-
-    auto process = [](int &grid, int &z, int &blockChoiceZ)
-    {
-        int halve = grid/2;
-        int mod = halve%2;
-        int left = halve-mod;
-        int right = halve+mod;
-        if(z < left)
-        {
-            grid = left;
-            blockChoiceZ = 1;
-        }
-        else
-        {
-            grid = right;
-            z -= left;
-            blockChoiceZ = 2;
-        }
-    };
-
-    while(std::min(gridx, gridy) > 10 ||
-          std::max(gridx, gridy) > 12)
-    {
-        process(gridx, x, blockChoiceX);
-        process(gridy, y, blockChoiceY);
-        
-        assert(!((!blockChoiceX)^(!blockChoiceY)));
-        jat =
-            blockChoiceX == 1 && blockChoiceY == 1 && (x == gridx-3 && y == gridy-1) ? 1 :
-            blockChoiceX == 1 && blockChoiceY == 1 && (x == gridx-1 && y == gridy-2) ? 2 :
-            blockChoiceX == 2 && blockChoiceY == 1 && (x == 1       && y == gridy-3) ? 3 :
-            blockChoiceX == 2 && blockChoiceY == 1 && (x == 0       && y == gridy-1) ? 4 :
-            blockChoiceX == 2 && blockChoiceY == 2 && (x == 2       && y == 0      ) ? 5 :
-            blockChoiceX == 2 && blockChoiceY == 2 && (x == 0       && y == 1      ) ? 6 :
-            blockChoiceX == 1 && blockChoiceY == 2 && (x == gridx-2 && y == 2      ) ? 7 :
-            blockChoiceX == 1 && blockChoiceY == 2 && (x == gridx-1 && y == 0      ) ? 8 : jat;
-    }
-
-    return std::make_tuple(std::make_pair(gridx, gridy), std::make_pair(x, y), jat);
-}
 
 static const std::array <const Offset, 8> d =
 {
@@ -153,26 +99,70 @@ static const std::map <Grid, const std::vector <std::vector <std::array <unsigne
     {{12,10}, Grid12_10}
 };
 
-static Point nextPoint(int n, Point pos, Point lastPos)
+static Point nextPoint(int n, const Point &pos, Point lastPos)
 {
     Grid grid;
     Point point;
     JunctionalAngleType jat;
-    std::tie(grid, point, jat) = localize(n, pos);
 
-    bool flag = false;
-
-    if(grid.first < grid.second)
     {
-        int t = grid.first;
-        grid.first = grid.second;
-        grid.second = t;
+        int gridx = n;
+        int gridy = n;
+        int x = pos.first;
+        int y = pos.second;
 
-        t = point.first;
-        point.first = point.second;
-        point.second = t;
+        int blockChoiceX = 0;
+        int blockChoiceY = 0;
 
-        flag = true;
+        jat = 0;
+
+        auto process = [](int &grid, int &z, int &blockChoiceZ)
+        {
+            int halve = grid/2;
+            int mod = halve%2;
+            int left = halve-mod;
+            int right = halve+mod;
+            if(z < left)
+            {
+                grid = left;
+                blockChoiceZ = 1;
+            }
+            else
+            {
+                grid = right;
+                z -= left;
+                blockChoiceZ = 2;
+            }
+        };
+
+        while(std::min(gridx, gridy) > 10 ||
+              std::max(gridx, gridy) > 12)
+        {
+            process(gridx, x, blockChoiceX);
+            process(gridy, y, blockChoiceY);
+            
+            assert(!((!blockChoiceX)^(!blockChoiceY)));
+            jat =
+                blockChoiceX == 1 && blockChoiceY == 1 && (x == gridx-3 && y == gridy-1) ? 1 :
+                blockChoiceX == 1 && blockChoiceY == 1 && (x == gridx-1 && y == gridy-2) ? 2 :
+                blockChoiceX == 2 && blockChoiceY == 1 && (x == 1       && y == gridy-3) ? 3 :
+                blockChoiceX == 2 && blockChoiceY == 1 && (x == 0       && y == gridy-1) ? 4 :
+                blockChoiceX == 2 && blockChoiceY == 2 && (x == 2       && y == 0      ) ? 5 :
+                blockChoiceX == 2 && blockChoiceY == 2 && (x == 0       && y == 1      ) ? 6 :
+                blockChoiceX == 1 && blockChoiceY == 2 && (x == gridx-2 && y == 2      ) ? 7 :
+                blockChoiceX == 1 && blockChoiceY == 2 && (x == gridx-1 && y == 0      ) ? 8 : jat;
+        }
+
+        grid = std::make_pair(gridx, gridy);
+        point = std::make_pair(x, y);
+    }
+
+    bool shouldReverse = grid.first < grid.second;
+
+    if(shouldReverse)
+    {
+        std::swap(grid.first, grid.second);
+        std::swap(point.first, point.second);
     }
 
     const std::array <unsigned int, 2> &v = m.at(grid)[point.second][point.first];
@@ -180,79 +170,24 @@ static Point nextPoint(int n, Point pos, Point lastPos)
     unsigned int h0 = v[0];
     unsigned int h1 = v[1];
 
-    if(flag)
+    if(shouldReverse)
     {
         h0 = (9-h0)%8;
         h1 = (9-h1)%8;
     }
 
-    switch(jat)
     {
-        case 0: break;
-        case 1:
-        {
-            if(h0 == 3) h0 = 4;
-            else if(h1 == 3) h1 = 4;
-            else assert(0);
-            break;
-        }
-        case 2:
-        {
-            if(h0 == 7) h0 = 3;
-            else if(h1 == 7) h1 = 3;
-            else assert(0);
-            break;
-        }
-        case 3:
-        {
-            if(h0 == 6) h0 = 7;
-            else if(h1 == 6) h1 = 7;
-            else assert(0);
-            break;
-        }
-        case 4:
-        {
-            if(h0 == 2) h0 = 4;
-            else if(h1 == 2) h1 = 4;
-            else assert(0);
-            break;
-        }
-        case 5:
-        {
-            if(h0 == 7) h0 = 0;
-            else if(h1 == 7) h1 = 0;
-            else assert(0);
-            break;
-        }
-        case 6:
-        {
-            if(h0 == 3) h0 = 7;
-            else if(h1 == 3) h1 = 7;
-            else assert(0);
-            break;
-        }
-        case 7:
-        {
-            if(h0 == 2) h0 = 3;
-            else if(h1 == 2) h1 = 3;
-            else assert(0);
-            break;
-        }
-        case 8:
-        {
-            if(h0 == 6) h0 = 0;
-            else if(h1 == 6) h1 = 0;
-            else assert(0);
-            break;
-        }
-        default: assert(0);
+        const std::array <int, 9> m = {-1, 3, 7, 6, 2, 7, 3, 2, 6};
+        const std::array <int, 9> n = {-1, 4, 3, 7, 4, 0, 7, 3, 0};
+
+        if(jat == 0) ;
+        else if(h0 == m[jat]) h0 = n[jat];
+        else if(h1 == m[jat]) h1 = n[jat];
+        else assert(0);
     }
 
-    Offset o0 = d[h0];
-    Offset o1 = d[h1];
-
-    Point newpoint0 = std::make_pair(pos.first+o0.first, pos.second+o0.second);
-    Point newpoint1 = std::make_pair(pos.first+o1.first, pos.second+o1.second);
+    Point newpoint0 = std::make_pair(pos.first + d[h0].first, pos.second + d[h0].second);
+    Point newpoint1 = std::make_pair(pos.first + d[h1].first, pos.second + d[h1].second);
 
     if(lastPos == newpoint0) return newpoint1;
     else if(lastPos == newpoint1) return newpoint0;
