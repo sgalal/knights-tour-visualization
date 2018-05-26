@@ -49,16 +49,19 @@ function draw(n, ns)
     var len = 500;
     var edge = len/(n-1);
 
-    function doDraw(n, pos, lastPos)
+    function doDraw(n, posX, posY, lastPosX, lastPosY)
     {
         sleepDo(ns, function()
         {
-            var nextPos = Module.nextPoint(n, pos, lastPos);
+            var nextPos = Module.nextPoint(n, posX, posY, lastPosX, lastPosY);
 
-            var beginX = edge*Module.getFirst(pos);
-            var beginY = edge*Module.getSecond(pos);
-            var endX = edge*Module.getFirst(nextPos);
-            var endY = edge*Module.getSecond(nextPos);
+            var nextPosX = Module.getFirst(nextPos);
+            var nextPosY = Module.getSecond(nextPos);
+
+            var beginX = edge * posX;
+            var beginY = edge * posY;
+            var endX = edge * nextPosX;
+            var endY = edge * nextPosY;
 
             ctx.beginPath();
             ctx.moveTo(beginX, beginY);
@@ -66,8 +69,8 @@ function draw(n, ns)
             ctx.strokeStyle = 'red';
             ctx.lineWidth = 1;
             ctx.stroke();
-            if(Module.getFirst(nextPos) != 2 || Module.getSecond(nextPos) != 0)
-                doDraw(n, nextPos, pos);
+            if(nextPosX != 2 || nextPosY != 0)
+                doDraw(n, nextPosX, nextPosY, posX, posY);
             ctx.closePath();
 
             ctx.beginPath();
@@ -78,7 +81,7 @@ function draw(n, ns)
         });
     }
 
-    doDraw(n, Module.make_point(2, 0), Module.make_point(0, 1));
+    doDraw(n, 2, 0, 0, 1);
 }
 
 function doCalc()

@@ -7,7 +7,6 @@
 using Grid = std::pair <int, int>;
 using Point = std::pair <int, int>;
 using Offset = std::pair <int, int>;
-using JunctionalAngleType = unsigned int;
 
 static const std::array <const Offset, 8> d =
 {
@@ -89,6 +88,10 @@ static const std::vector <std::vector <std::array <unsigned int, 2>>> Grid12_10 
     {{2,3}, {1,3}, {0,1}, {0,3}, {0,2}, {0,3}, {1,3}, {0,3}, {0,1}, {0,3}, {0,2}, {0,1}}
 };
 
+static const std::array <int, 8> pathOrigin = {3, 7, 6, 2, 7, 3, 2, 6};
+
+static const std::array <int, 8> pathAfter = {4, 3, 7, 4, 0, 7, 3, 0};
+
 static const std::map <Grid, const std::vector <std::vector <std::array <unsigned int, 2>>> &> m =
 {
     {{6,6}, Grid66},
@@ -99,61 +102,56 @@ static const std::map <Grid, const std::vector <std::vector <std::array <unsigne
     {{12,10}, Grid12_10}
 };
 
-static Point nextPoint(int n, const Point &pos, Point lastPos)
+static Point nextPoint(int n, int posX, int posY, int lastPosX, int lastPosY)
 {
-    Grid grid;
+    Grid grid(n, n);
     Point point;
-    JunctionalAngleType jat;
+    int pointAttribute = -1;
 
     {
-        int gridx = n;
-        int gridy = n;
-        int x = pos.first;
-        int y = pos.second;
+        int x = posX;
+        int y = posY;
 
         int blockChoiceX = 0;
         int blockChoiceY = 0;
 
-        jat = 0;
-
-        auto process = [](int &grid, int &z, int &blockChoiceZ)
+        auto process = [](int &gridz, int &z, int &blockChoiceZ)
         {
-            int halve = grid/2;
+            int halve = gridz/2;
             int mod = halve%2;
             int left = halve-mod;
             int right = halve+mod;
             if(z < left)
             {
-                grid = left;
+                gridz = left;
                 blockChoiceZ = 1;
             }
             else
             {
-                grid = right;
+                gridz = right;
                 z -= left;
                 blockChoiceZ = 2;
             }
         };
 
-        while(std::min(gridx, gridy) > 10 ||
-              std::max(gridx, gridy) > 12)
+        while(std::min(grid.first, grid.second) > 10 ||
+              std::max(grid.first, grid.second) > 12)
         {
-            process(gridx, x, blockChoiceX);
-            process(gridy, y, blockChoiceY);
+            process(grid.first, x, blockChoiceX);
+            process(grid.second, y, blockChoiceY);
             
             assert(!((!blockChoiceX)^(!blockChoiceY)));
-            jat =
-                blockChoiceX == 1 && blockChoiceY == 1 && (x == gridx-3 && y == gridy-1) ? 1 :
-                blockChoiceX == 1 && blockChoiceY == 1 && (x == gridx-1 && y == gridy-2) ? 2 :
-                blockChoiceX == 2 && blockChoiceY == 1 && (x == 1       && y == gridy-3) ? 3 :
-                blockChoiceX == 2 && blockChoiceY == 1 && (x == 0       && y == gridy-1) ? 4 :
-                blockChoiceX == 2 && blockChoiceY == 2 && (x == 2       && y == 0      ) ? 5 :
-                blockChoiceX == 2 && blockChoiceY == 2 && (x == 0       && y == 1      ) ? 6 :
-                blockChoiceX == 1 && blockChoiceY == 2 && (x == gridx-2 && y == 2      ) ? 7 :
-                blockChoiceX == 1 && blockChoiceY == 2 && (x == gridx-1 && y == 0      ) ? 8 : jat;
+            pointAttribute =
+                blockChoiceX == 1 && blockChoiceY == 1 && (x == grid.first-3 && y == grid.second-1) ? 0 :
+                blockChoiceX == 1 && blockChoiceY == 1 && (x == grid.first-1 && y == grid.second-2) ? 1 :
+                blockChoiceX == 2 && blockChoiceY == 1 && (x == 1            && y == grid.second-3) ? 2 :
+                blockChoiceX == 2 && blockChoiceY == 1 && (x == 0            && y == grid.second-1) ? 3 :
+                blockChoiceX == 2 && blockChoiceY == 2 && (x == 2            && y == 0            ) ? 4 :
+                blockChoiceX == 2 && blockChoiceY == 2 && (x == 0            && y == 1            ) ? 5 :
+                blockChoiceX == 1 && blockChoiceY == 2 && (x == grid.first-2 && y == 2            ) ? 6 :
+                blockChoiceX == 1 && blockChoiceY == 2 && (x == grid.first-1 && y == 0            ) ? 7 : pointAttribute;
         }
 
-        grid = std::make_pair(gridx, gridy);
         point = std::make_pair(x, y);
     }
 
@@ -176,27 +174,21 @@ static Point nextPoint(int n, const Point &pos, Point lastPos)
         h1 = (9-h1)%8;
     }
 
+    if(pointAttribute != -1)
     {
-        const std::array <int, 9> m = {-1, 3, 7, 6, 2, 7, 3, 2, 6};
-        const std::array <int, 9> n = {-1, 4, 3, 7, 4, 0, 7, 3, 0};
-
-        if(jat == 0) ;
-        else if(h0 == m[jat]) h0 = n[jat];
-        else if(h1 == m[jat]) h1 = n[jat];
+        int pori = pathOrigin[pointAttribute];
+        int paft = pathAfter[pointAttribute];
+        if(h0 == pori) h0 = paft;
+        else if(h1 == pori) h1 = paft;
         else assert(0);
     }
 
-    Point newpoint0 = std::make_pair(pos.first + d[h0].first, pos.second + d[h0].second);
-    Point newpoint1 = std::make_pair(pos.first + d[h1].first, pos.second + d[h1].second);
+    Point newpoint0 = std::make_pair(posX + d[h0].first, posY + d[h0].second);
+    Point newpoint1 = std::make_pair(posX + d[h1].first, posY + d[h1].second);
 
-    if(lastPos == newpoint0) return newpoint1;
-    else if(lastPos == newpoint1) return newpoint0;
+    if(lastPosX == newpoint0.first && lastPosY == newpoint0.second) return newpoint1;
+    else if(lastPosX == newpoint1.first && lastPosY == newpoint1.second) return newpoint0;
     assert(0);
-}
-
-static Point make_point(int x, int y)
-{
-    return std::make_pair(x, y);
 }
 
 static int getFirst(Point p)
