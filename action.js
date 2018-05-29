@@ -114,10 +114,7 @@ function checkEnter(e)
     if(keycode == 13)
     {
         if(window.event)
-        {
             window.event.returnValue = false;
-            drawWrapper();
-        }
         else
             e.preventDefault();  // For Firefox
     }
