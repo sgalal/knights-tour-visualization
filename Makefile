@@ -1,7 +1,7 @@
 BUILD_PATH      = docs/
 EMSDK_ENV_PATH  = /f/Source/Repos/emsdk/emsdk_env.sh
 EMCC            = emcc -std=gnu11 -Weverything -Werror -Wno-unused-function -Wno-language-extension-token -O2 -s ASSERTIONS=1
-CC              = clang -std=gnu11 -Weverything -Werror -Wno-language-extension-token --target=x86_64-w64-mingw32
+CC              = clang -std=gnu11 -Weverything -Werror -Wno-language-extension-token
 
 default : src/tour.h src/tour.c src/index.htm src/async.js src/action.js
 	source $(EMSDK_ENV_PATH) && $(EMCC) -s EXPORTED_FUNCTIONS='["_getNextPointSerialize"]' -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' -o $(BUILD_PATH)tour.js src/tour.c
