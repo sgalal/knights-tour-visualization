@@ -13,4 +13,5 @@ before_install:
   - npm install uglify-js -g
 
 script:
-  - docker exec -it emscripten make
+  - docker exec -it emscripten make docs/tour.js
+  - make
