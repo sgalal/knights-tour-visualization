@@ -103,13 +103,7 @@ static const std::map <Grid, const std::vector <std::vector <std::array <unsigne
     {{12,10}, Grid12_10}
 };
 
-/// Returns the next point of the knight's tour.
-/// @param n Board size.
-/// @param posX X-axis of current position.
-/// @param posY Y-axis of current position.
-/// @param lastPosX X-axis of last position.
-/// @param lastPosY Y-axis of last position.
-static Point nextPoint(int n, int posX, int posY, int lastPosX, int lastPosY)
+static std::pair <Point, Point> getPath(int n, int posX, int posY)
 {
     int gridSizeX = n, gridSizeY = n;
     int gridLocX = posX, gridLocY = posY;
@@ -186,6 +180,21 @@ static Point nextPoint(int n, int posX, int posY, int lastPosX, int lastPosY)
 
     Point newpoint0 = std::make_pair(posX + dir[h0].first, posY + dir[h0].second);
     Point newpoint1 = std::make_pair(posX + dir[h1].first, posY + dir[h1].second);
+
+    return std::make_pair(newpoint0, newpoint1);
+}
+
+/// Returns the next point of the knight's tour.
+/// @param n Board size.
+/// @param posX X-axis of current position.
+/// @param posY Y-axis of current position.
+/// @param lastPosX X-axis of last position.
+/// @param lastPosY Y-axis of last position.
+static Point nextPoint(int n, int posX, int posY, int lastPosX, int lastPosY)
+{
+    Point newpoint0;
+    Point newpoint1;
+    std::tie(newpoint0, newpoint1) = getPath(n, posX, posY);
 
     if(lastPosX == newpoint0.first && lastPosY == newpoint0.second) return newpoint1;
     else if(lastPosX == newpoint1.first && lastPosY == newpoint1.second) return newpoint0;
