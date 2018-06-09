@@ -3,4 +3,7 @@ install:
   - npm install uglify-js -g
 
 build_script:
-  - mingw32-make test
+  - mingw32-make
+
+test_script:
+  - mingw32-maketest
