@@ -54,10 +54,10 @@ function draw(n, ms)
     {
         function doStroke()
         {
-            var nextPos = Module.nextPoint(n, posX, posY, lastPosX, lastPosY);
+            var nextPos = Module.ccall('getNextPointSerialize', 'number', ['number', 'number', 'number', 'number', 'number'], [n, posX, posY, lastPosX, lastPosY]);
 
-            var nextPosX = Module.getFirst(nextPos);
-            var nextPosY = Module.getSecond(nextPos);
+            var nextPosX = parseInt(nextPos / n);
+            var nextPosY = nextPos % n;
 
             var beginX = edge * posX;
             var beginY = edge * posY;

@@ -1,20 +1,22 @@
-EMSDK_ENV_PATH = /f/Source/Repos/emsdk/emsdk_env.sh
-TB_BUILD_TARGET = x86_64-pc-mingw64-gnu
+BUILD_PATH      = docs/
+EMSDK_ENV_PATH  = /f/Source/Repos/emsdk/emsdk_env.sh
+EMCC            = emcc -std=gnu11 -Weverything -Werror -Wno-unused-function -Wno-language-extension-token -O2 -s ASSERTIONS=1
+CC              = clang -std=gnu11 -Weverything -Werror -Wno-language-extension-token --target=x86_64-pc-mingw64-gnu
 
-default : src/tour.h src/tour_gen.cpp src/index.htm src/async.js src/action.js
-	source $(EMSDK_ENV_PATH) && emcc src/tour_gen.cpp -Wall -Wno-missing-braces -O2 -std=gnu++14 --bind -o docs/tour.js
-	cp src/index.htm docs/index.htm
-	cp src/async.js docs/async.js
-	uglifyjs src/action.js -o docs/action.js
+default : src/tour.h src/tour.c src/index.htm src/async.js src/action.js
+	source $(EMSDK_ENV_PATH) && $(EMCC) -s EXPORTED_FUNCTIONS='["_getNextPointSerialize"]' -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' -o $(BUILD_PATH)tour.js src/tour.c
+	cp src/index.htm $(BUILD_PATH)index.htm
+	cp src/async.js $(BUILD_PATH)async.js
+	uglifyjs src/action.js -o $(BUILD_PATH)action.js
 
 cp-only : src/index.htm src/async.js src/action.js
-	cp src/index.htm docs/index.htm
-	cp src/async.js docs/async.js
-	uglifyjs src/action.js -o docs/action.js
+	cp src/index.htm $(BUILD_PATH)index.htm
+	cp src/async.js $(BUILD_PATH)async.js
+	uglifyjs src/action.js -o $(BUILD_PATH)action.js
 
-test : src/tour.h src/tour_tb.cpp
-	clang++ src/tour_tb.cpp -Weverything -std=gnu++14 -o docs/tour.exe -Wno-c++98-compat -Wno-global-constructors -Wno-exit-time-destructors --target=$(TB_BUILD_TARGET)
-	./docs/tour
+test : src/tour.h src/tour.c src/tour_tb.c
+	$(CC) -DDEBUG -o $(BUILD_PATH)tour.exe src/tour.c src/tour_tb.c
+	./$(BUILD_PATH)tour
 
 clean :
-	rm -f docs/tour.wasm docs/tour.js docs/index.htm docs/async.js docs/action.js docs/tour.exe
+	rm -f $(BUILD_PATH)tour.wasm $(BUILD_PATH)tour.js $(BUILD_PATH)index.htm $(BUILD_PATH)async.js $(BUILD_PATH)action.js $(BUILD_PATH)tour.exe
