@@ -10,7 +10,7 @@ services:
 
 before_install:
   - docker run -dit --name emscripten -v $(pwd):/src trzeci/emscripten:sdk-incoming-64bit bash
+  - npm install uglify-js -g
 
 script:
   - docker exec -it emscripten make
-  - export PATH="$PATH:." && make test
