@@ -14,16 +14,16 @@
 
 #define process(gridz, z, blockChoiceZ) \
     do {   \
-    unsigned int halve = gridz / 2;            \
-    unsigned int mod = halve % 2;            \
-    unsigned int left = halve - mod;        \
-    unsigned int right = halve + mod;        \
-        if(z < left) {                \
-            gridz = left;            \
+        unsigned int __halve = gridz / 2;            \
+        unsigned int __mod = __halve % 2;            \
+        unsigned int __left = __halve - __mod;        \
+        unsigned int __right = __halve + __mod;        \
+        if (z < __left) {                \
+            gridz = __left;            \
             blockChoiceZ = 1;        \
         } else {                    \
-            gridz = right;            \
-            z -= left;                \
+            gridz = __right;            \
+            z -= __left;                \
             blockChoiceZ = 2;        \
         }                              \
     } while (0)
@@ -38,7 +38,7 @@ static const unsigned int Grid6_6[6][6][2] =
     {{2,3}, {1,3}, {1,0}, {3,0}, {0,2}, {0,1}}
 };
 
-static const unsigned int Grid8_6[6][8][2] =
+static const unsigned int Grid6_8[6][8][2] =
 {
     {{4,5}, {4,6}, {4,7}, {4,7}, {4,6}, {4,6}, {5,7}, {6,7}},
     {{3,4}, {3,6}, {6,0}, {0,4}, {0,3}, {0,3}, {0,5}, {0,7}},
@@ -60,7 +60,7 @@ static const unsigned int Grid8_8[8][8][2] =
     {{2,3}, {1,3}, {0,1}, {0,3}, {0,3}, {1,3}, {1,2}, {0,1}}
 };
 
-static const unsigned int Grid10_8[8][10][2] =
+static const unsigned int Grid8_10[8][10][2] =
 {
     {{4,5}, {4,6}, {4,7}, {4,7}, {4,7}, {6,7}, {4,7}, {4,7}, {5,7}, {6,7}},
     {{3,4}, {3,6}, {0,3}, {0,3}, {0,3}, {0,3}, {0,3}, {3,4}, {0,5}, {0,6}},
@@ -86,7 +86,7 @@ static const unsigned int Grid10_10[10][10][2] =
     {{2,3}, {1,2}, {0,3}, {1,3}, {0,3}, {0,2}, {0,3}, {2,3}, {0,2}, {0,1}}
 };
 
-static const unsigned int Grid12_10[10][12][2] =
+static const unsigned int Grid10_12[10][12][2] =
 {
     {{4,5}, {4,6}, {6,7}, {4,7}, {5,6}, {4,7}, {5,7}, {4,7}, {4,6}, {4,7}, {5,6}, {6,7}},
     {{3,5}, {3,6}, {0,7}, {0,3}, {3,6}, {0,3}, {6,7}, {0,3}, {5,6}, {0,3}, {0,5}, {0,6}},
@@ -106,7 +106,7 @@ static const unsigned int offsetTypeSubstituteArr[8] = {4, 3, 7, 4, 0, 7, 3, 0};
 
 static const int offsetDirArr[8][2] =
 {
-    {-2,-1}, {-1,-2}, { 1,-2}, { 2,-1}, { 2, 1}, { 1, 2}, {-1, 2}, {-2, 1}
+    {-2,-1}, {-1,-2}, {1,-2}, {2,-1}, {2, 1}, {1, 2}, {-1,2}, {-2,1}
 };
 
 static void getPointGridAttribute
@@ -177,15 +177,15 @@ static void getPossibleNextPointOffsetType
     if(gridSizeX == 6 && gridSizeY == 6)
         p = Grid6_6[gridLocY][gridLocX];
     else if(gridSizeX == 8 && gridSizeY == 6)
-        p = Grid8_6[gridLocY][gridLocX];
+        p = Grid6_8[gridLocY][gridLocX];
     else if(gridSizeX == 8 && gridSizeY == 8)
         p = Grid8_8[gridLocY][gridLocX];
     else if(gridSizeX == 10 && gridSizeY == 8)
-        p = Grid10_8[gridLocY][gridLocX];
+        p = Grid8_10[gridLocY][gridLocX];
     else if(gridSizeX == 10 && gridSizeY == 10)
         p = Grid10_10[gridLocY][gridLocX];
     else if(gridSizeX == 12 && gridSizeY == 10)
-        p = Grid12_10[gridLocY][gridLocX];
+        p = Grid10_12[gridLocY][gridLocX];
     else {  /* Grid size must always meet one of the designated grid sizes */
         #ifdef DEBUG
             fprintf(stderr, "Error: gridSizeX = %u, gridSizeY = %u\n"
@@ -258,8 +258,9 @@ void getNextPoint
     } else if (next_b_x == last_x && next_b_y == last_y) {
         *next_x_p = next_a_x;
         *next_y_p = next_a_y;
-    } else
+    } else {
         assert(0);
+    }
 }
 
 static unsigned int pointSerialize(unsigned int n, unsigned int x, unsigned int y)
