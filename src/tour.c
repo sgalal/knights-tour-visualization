@@ -28,6 +28,8 @@
         }                              \
     } while (0)
 
+/* Six pre-defined, closed, structured knight's tours. */
+
 static const unsigned int Grid6_6[6][6][2] =
 {
     {{4,5}, {5,6}, {4,7}, {4,7}, {5,7}, {6,7}},
@@ -105,9 +107,7 @@ static const unsigned int offsetTypeOriginArr[8] = {3, 7, 6, 2, 7, 3, 2, 6};
 static const unsigned int offsetTypeSubstituteArr[8] = {4, 3, 7, 4, 0, 7, 3, 0};
 
 static const int offsetDirArr[8][2] =
-{
-    {-2,-1}, {-1,-2}, {1,-2}, {2,-1}, {2, 1}, {1, 2}, {-1,2}, {-2,1}
-};
+    {{-2,-1}, {-1,-2}, {1,-2}, {2,-1}, {2, 1}, {1, 2}, {-1,2}, {-2,1}};
 
 static void getPointGridAttribute
 (
