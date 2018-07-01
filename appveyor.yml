@@ -1,6 +1,13 @@
 install:
   - set PATH=%PATH%;C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\mingw64\bin
+  - git clone https://github.com/juj/emsdk.git
+  - cd emsdk
+  - emsdk update
+  - emsdk install latest
+  - emsdk activate latest
+  - emsdk_env.bat
   - npm install uglify-js -g
 
 build_script:
+  - mingw32-make
   - mingw32-make test

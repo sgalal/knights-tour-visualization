@@ -1,5 +1,5 @@
 language: node_js
-os: osx
+os: linux
 dist: trusty
 node_js:
   - node
