@@ -13,4 +13,4 @@ test_script:
   - mingw32-make test
 
 artifacts:
-  - docs
+  - path: docs
