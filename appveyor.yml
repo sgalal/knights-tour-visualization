@@ -4,13 +4,13 @@ before_build:
   - C:\emsdk\emsdk install latest
   - C:\emsdk\emsdk activate latest
   - C:\emsdk\emsdk_env.bat
+  - set PATH=%PATH%;C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\mingw64\bin
 
 build_script:
-  - set PATH=%PATH%;C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\mingw64\bin
+  - set SPACE= 
+  - echo=%SPACE% >> Makefile
   - mingw32-make
-
-test_script:
-  - mingw32-make test
 
 artifacts:
   - path: docs
+    name: build
