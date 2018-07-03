@@ -31,11 +31,14 @@
   <body onload='doCalc()'>
     <h1>Knight's Tour Visualization</h1>
     <p>
-      <i>
-        Knight's tour visualization in C and JavaScript using 
-        <b>divide and conquer</b> 
-        algorithm. The route is shown in animation.
-      </i>
+      <big>
+        <i>
+          <strong>
+            Knight's tour visualizer
+          </strong>
+          in C and JavaScript using divide and conquer algorithm, with the route shown in animation.
+        </i>
+      </big>
     </p>
     <p>
       Half of the board size: 
@@ -45,21 +48,22 @@
       ).
     </p>
     <p>
-      Time of a stroke(ms): 
+      Time of a stroke (ms): 
       <textarea id='stroketime' rows='1' cols='8' onkeydown='checkEnter(event)'>50</textarea>
       <button type='button' onclick='drawWrapper()'>Start</button>
     </p>
     <p>
-      <strong>
-        Tips: An <i>n</i> * <i>n</i> chessboard has a 
-        <b>closed knight's tour</b>
-        iff <i>n</i> ≥ 6 is even.
-      </strong>
+      <strong>Tips:</strong> An <i>n</i> * <i>n</i> chessboard has a <b>closed knight's tour</b> iff <i>n</i> ≥ 6 is even.
+    </p>
+    <p>
+      <strong>Note:</strong> The pieces of chess are placed inside a square, while the pieces of Chinese chess are placed on the intersections of the lines.
     </p>
     <canvas id='canvas' width='500' height='500'>Canvas not supported</canvas>
-    <p>The source code can be found on 
+    <p>
+      The source code can be found on 
       <a href='https://github.com/chromezh/knights-tour-visualization'>GitHub.</a>
     </p>
     <p>Copyright (c) 2018 chromezh</p>
+    <br/>
   </body>
 </html>

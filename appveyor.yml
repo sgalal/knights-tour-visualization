@@ -2,7 +2,7 @@ before_build:
   - npm install uglify-js -g
   - git clone https://github.com/juj/emsdk.git C:\emsdk
   - C:\emsdk\emsdk install latest
-  - C:\emsdk\emsdk activate latest
+  - C:\emsdk\emsdk activate --global latest
   - C:\emsdk\emsdk_env.bat
   - set PATH=%PATH%;C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\mingw64\bin
 

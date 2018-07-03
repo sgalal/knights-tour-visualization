@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/chromezh/knights-tour-visualization.svg?branch=master)](https://travis-ci.org/chromezh/knights-tour-visualization) [![Build status](https://ci.appveyor.com/api/projects/status/a3t55hc7dcxlwlg2?svg=true)](https://ci.appveyor.com/project/chromezh/knights-tour-visualization) [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
 
-Knight's tour visualization in C and JavaScript using divide and conquer algorithm, with the route shown in animation.
+Knight's tour visualizer in C and JavaScript using divide and conquer algorithm, with the route shown in animation.
 
 [Emscripten](http://kripken.github.io/emscripten-site/) is used to compile the C code into JavaScript.
 

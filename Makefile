@@ -1,9 +1,8 @@
 BUILD_PATH   = docs/
 EMCC         = emcc -std=gnu11 -Weverything -Werror -Wno-unused-function -Wno-language-extension-token -O2 -s ASSERTIONS=1
 CC           = clang -std=gnu11 -Weverything -Werror -Wno-language-extension-token
-OBJECTS      = $(BUILD_PATH)tour.js $(BUILD_PATH)index.htm $(BUILD_PATH)async.js $(BUILD_PATH)action.js Makefile
 
-default : $(OBJECTS)
+default : $(BUILD_PATH)tour.js $(BUILD_PATH)index.htm $(BUILD_PATH)async.js $(BUILD_PATH)action.js
 
 $(BUILD_PATH)tour.js : src/tour.h src/tour.c Makefile
 	$(EMCC) -s EXPORTED_FUNCTIONS='["_getNextPointSerialize"]' -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' -o $(BUILD_PATH)tour.js src/tour.c
