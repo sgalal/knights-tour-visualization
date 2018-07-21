@@ -2,16 +2,13 @@ BUILD_PATH   = docs/
 EMCC         = emcc -std=gnu11 -Weverything -Werror -Wno-unused-function -Wno-language-extension-token -O2 -s ASSERTIONS=1
 CC           = clang -std=gnu11 -Weverything -Werror -Wno-language-extension-token
 
-default : $(BUILD_PATH)tour.js $(BUILD_PATH)index.htm $(BUILD_PATH)async.js $(BUILD_PATH)action.js
+default : $(BUILD_PATH)tour.js $(BUILD_PATH)index.htm $(BUILD_PATH)action.js
 
 $(BUILD_PATH)tour.js : src/tour.h src/tour.c Makefile
 	$(EMCC) -s EXPORTED_FUNCTIONS='["_getNextPointSerialize"]' -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' -o $(BUILD_PATH)tour.js src/tour.c
 
 $(BUILD_PATH)index.htm : src/index.htm Makefile
 	cp src/index.htm $(BUILD_PATH)index.htm
-
-$(BUILD_PATH)async.js : src/async.js Makefile
-	cp src/async.js $(BUILD_PATH)async.js
 
 $(BUILD_PATH)action.js : src/action.js Makefile
 	uglifyjs src/action.js -o $(BUILD_PATH)action.js

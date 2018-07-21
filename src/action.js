@@ -45,43 +45,48 @@ function draw(n, ms) {
     ctx.lineWidth = 1;
     var len = 500;
     var edge = len / (n - 1);
+    
+    var posX = 2;
+    var posY = 0;
+    var lastPosX = 0;
+    var lastPosY = 1;
 
-    function doDraw(n, posX, posY, lastPosX, lastPosY) {
-        function doStroke() {
-            var nextPos = Module.ccall('getNextPointSerialize', 'number', ['number', 'number', 'number', 'number', 'number'], [n, posX, posY, lastPosX, lastPosY]);
+    (function() {
+        var nextPos = Module.ccall('getNextPointSerialize', 'number', ['number', 'number', 'number', 'number', 'number'], [n, posX, posY, lastPosX, lastPosY]);
 
-            var nextPosX = parseInt(nextPos / n);
-            var nextPosY = nextPos % n;
+        var nextPosX = parseInt(nextPos / n);
+        var nextPosY = nextPos % n;
 
-            var beginX = edge * posX;
-            var beginY = edge * posY;
-            var endX = edge * nextPosX;
-            var endY = edge * nextPosY;
+        var beginX = edge * posX;
+        var beginY = edge * posY;
+        var endX = edge * nextPosX;
+        var endY = edge * nextPosY;
 
-            ctx.beginPath();
-            ctx.moveTo(beginX, beginY);
-            ctx.lineTo(endX, endY);
-            ctx.strokeStyle = 'red';
-            ctx.lineWidth = 1;
-            ctx.stroke();
-            if (nextPosX != 2 || nextPosY != 0)
-                doDraw(n, nextPosX, nextPosY, posX, posY);
-            ctx.closePath();
+        ctx.beginPath();
+        ctx.moveTo(beginX, beginY);
+        ctx.lineTo(endX, endY);
+        ctx.strokeStyle = 'red';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.closePath();
 
-            ctx.beginPath();
-            ctx.arc(endX, endY, 3, 0, 360, false);
-            ctx.fillStyle = 'blue';
-            ctx.fill();
-            ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(endX, endY, 3, 0, 360, false);
+        ctx.fillStyle = 'blue';
+        ctx.fill();
+        ctx.closePath();
+
+        if (nextPosX != 2 || nextPosY != 0) {
+            lastPosX = posX;
+            lastPosY = posY;
+            posX = nextPosX;
+            posY = nextPosY;
+            if (ms > 0)
+                setTimeout(arguments.callee, ms);
+            else
+                arguments.callee();
         }
-
-        if (ms > 0)
-            sleepDo(ms, doStroke);
-        else
-            doStroke();
-    }
-
-    doDraw(n, 2, 0, 0, 1);
+    })();
 }
 
 function doCalc() {
