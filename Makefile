@@ -1,21 +1,23 @@
-BUILD_PATH   = docs/
 EMCC         = emcc -std=gnu11 -Weverything -Werror -Wno-unused-function -Wno-language-extension-token -O2 -s ASSERTIONS=1
 CC           = clang -std=gnu11 -Weverything -Werror -Wno-language-extension-token
 
-default : $(BUILD_PATH)tour.js $(BUILD_PATH)index.htm $(BUILD_PATH)action.js
+default : docs/tour.js docs/index.htm docs/style.css docs/action.js
 
-$(BUILD_PATH)tour.js : src/tour.h src/tour.c Makefile
-	$(EMCC) -s EXPORTED_FUNCTIONS='["_getNextPointSerialize"]' -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' -o $(BUILD_PATH)tour.js src/tour.c
+docs/tour.js : src/tour.h src/tour.c
+	$(EMCC) -s EXPORTED_FUNCTIONS='["_getNextPointSerialize"]' -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' -o docs/tour.js src/tour.c
 
-$(BUILD_PATH)index.htm : src/index.htm Makefile
-	cp src/index.htm $(BUILD_PATH)index.htm
+docs/index.htm : src/index.htm
+	cp src/index.htm docs/index.htm
 
-$(BUILD_PATH)action.js : src/action.js Makefile
-	uglifyjs src/action.js -o $(BUILD_PATH)action.js
+docs/style.css : src/style.css
+	cp src/style.css docs/style.css
+
+docs/action.js : src/action.js
+	uglifyjs src/action.js -o docs/action.js
 
 test : src/tour.h src/tour.c src/tour_tb.c
-	$(CC) -DDEBUG -o $(BUILD_PATH)tour.exe src/tour.c src/tour_tb.c
-	./$(BUILD_PATH)tour
+	$(CC) -DDEBUG -o docs/tour.exe src/tour.c src/tour_tb.c
+	./docs/tour
 
 clean :
-	rm -f $(BUILD_PATH)*
+	rm -f docs/*

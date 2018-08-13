@@ -93,7 +93,7 @@ function doCalc() {
     var n = 2 * parseInt(document.getElementById('sizeparam').value);
     if (n < 6)
         n = 6;
-    document.getElementById('sizeres').value = n + ' * ' + n;
+    document.getElementById('sizeres').innerText = n + ' * ' + n;
     drawBoard(n);
 }
 
@@ -104,7 +104,7 @@ function drawWrapper() {
     draw(n, parseInt(document.getElementById('stroketime').value));
 }
 
-function checkEnter(e) {
+function disableEnter(e) {
     var et = e || window.event;
     var keycode = et.charCode || et.keyCode;
     if (keycode == 13) {

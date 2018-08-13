@@ -1,0 +1,26 @@
+body
+{
+    background: #dddddd;
+    font-family: "Times New Roman", serif;
+}
+
+#canvas
+{
+    margin: 10px;
+    padding: 10px;
+    background: transparent;
+    border: thin inset #aaaaaa;
+}
+
+textarea
+{
+    resize: none;
+}
+
+textarea.ronly
+{
+    border: 0px solid;
+    background-color: transparent;
+    text-align: center;
+    font-family: "Times New Roman", serif;
+}
