@@ -1,43 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Knight's Tour Visualization</title>
     <script src="tour.js"></script>
     <script src="action.js"></script>
-    <link rel="stylesheet" href="./style.css" type="text/css" />
+    <style>
+  body{
+    background: #eee;
+    margin: 1rem;
+  }
+  canvas{
+    background: transparent;
+    border: 1px solid black;
+  }
+    </style>
   </head>
-  <body onload="doCalc()">
+  <body>
     <h1>Knight's Tour Visualization</h1>
+    <p><i>An online Knight's tour visualizer using divide and conquer algorithm.</i></p>
     <p>
-      <big>
-        <i>
-          <strong>Knight's tour visualizer</strong>
-          in C and JavaScript using divide and conquer algorithm, with the route shown in animation.
-        </i>
-      </big>
-    </p>
-    <p>
-      Half of the board size: 
-      <textarea id="sizeparam" rows="1" cols="8" onkeydown="disableEnter(event)" onkeyup="doCalc()">7</textarea>.
+      <b>Half of the board size</b>:
+      <input type="text" id="boardSize" value="7" onkeyup="doCalc()" />
       (The board size would be set as <span id="sizeres"></span>).
     </p>
     <p>
-      Time of a stroke (ms): 
-      <textarea id="stroketime" rows="1" cols="8" onkeydown="disableEnter(event)">50</textarea>
-      <button type="button" onclick="drawWrapper()">Start</button>
+      <b>Time of a stroke</b> (ms):
+      <input type="text" id="strokeTime" value="50" />
     </p>
+    <p><b>Tips:</b> An <i>n</i> * <i>n</i> chessboard has a <b>closed knight's tour</b> iff <i>n</i> ≥ 6 is even.</p>
+    <p><b>Note:</b> The pieces of chess are placed inside a square, while the pieces of Chinese chess are placed on the intersections of the lines.</p>
     <p>
-      <strong>Tips:</strong> An <i>n</i> * <i>n</i> chessboard has a <b>closed knight's tour</b> iff <i>n</i> ≥ 6 is even.
-    </p>
-    <p>
-      <strong>Note:</strong> The pieces of chess are placed inside a square, while the pieces of Chinese chess are placed on the intersections of the lines.
+      <button onclick="startDraw()">Start</button>
+      <button onclick="stopDraw()">Stop</button>
     </p>
     <canvas id="canvas" width="500" height="500">Canvas not supported</canvas>
-    <p>
-      The source code can be found on <a href="https://github.com/chromezh/knights-tour-visualization">GitHub.</a>
-    </p>
+    <p>The source code can be found on <a href="">GitHub.</a></p>
     <p>Copyright (c) 2018 chromezh</p>
-    <br/>
   </body>
 </html>

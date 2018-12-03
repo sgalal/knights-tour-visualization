@@ -12,7 +12,10 @@ For an online version, see https://chromezh.github.io/knights-tour-visualization
 
 ## Build
 
-**Prerequisites**: [GNU Make](http://www.gnu.org/software/make/), [Emscripten](http://kripken.github.io/emscripten-site/) and [UglifyJS](http://lisperator.net/uglifyjs/)
+**Prerequisites**:
+
+* [GNU Make](http://www.gnu.org/software/make/)
+* [Emscripten](http://kripken.github.io/emscripten-site/)
 
 **Build Script**: Run `make`. Then open `index.htm` in `docs` folder.
 
