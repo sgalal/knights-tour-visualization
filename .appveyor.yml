@@ -1,5 +1,4 @@
 before_build:
-  - npm install uglify-js -g
   - git clone https://github.com/juj/emsdk.git C:\emsdk
   - C:\emsdk\emsdk install latest
   - C:\emsdk\emsdk activate --global latest

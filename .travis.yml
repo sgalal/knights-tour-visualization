@@ -1,8 +1,6 @@
-language: node_js
+language: minimal
 os: linux
 dist: trusty
-node_js:
-  - node
 
 sudo: required
 
@@ -11,7 +9,6 @@ services:
 
 before_install:
   - docker run -dit --name emscripten -v $(pwd):/src trzeci/emscripten:sdk-incoming-64bit bash
-  - npm install uglify-js -g
 
 script:
   - touch Makefile
