@@ -9,9 +9,6 @@
     extern "C" {
 #endif
 
-#define swap(a, b) \
-    do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
-
 #define process(gridz, z, blockChoiceZ) \
     do {   \
         unsigned int __halve = gridz / 2;            \
@@ -165,11 +162,20 @@ static void getPossibleNextPointOffsetType
     unsigned int pointAttribute, gridSizeX, gridSizeY, gridLocX, gridLocY;
     getPointGridAttribute(n, x, y, &pointAttribute, &gridSizeX, &gridSizeY, &gridLocX, &gridLocY);
 
-    int shouldReverse = gridSizeX < gridSizeY;
+    const int shouldReverse = gridSizeX < gridSizeY;
 
     if (shouldReverse) {
-        swap(gridSizeX, gridSizeY);
-        swap(gridLocX, gridLocY);
+        /* Swap gridSizeX and gridSizeY */ {
+            const unsigned int t = gridSizeX;
+            gridSizeX = gridSizeY;
+            gridSizeY = t;
+        }
+
+        /* Swap gridSizeX and gridSizeY */ {
+            const unsigned int t = gridLocX;
+            gridLocX = gridLocY;
+            gridLocY = t;
+        }
     }
 
     const unsigned int *p;

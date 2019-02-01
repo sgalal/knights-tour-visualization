@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Knight's Tour Visualization</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="tour.js"></script>
+  <script src="index.js"></script>
+<style>
+html { background-color: #eee; }
+body { margin: 1rem; }
+header { font-style: italic; }
+a:not(:hover) { text-decoration: none; }
+</style>
+</head>
+<body>
+  <h1>Knight's Tour Visualization</h1>
+  <header>An online <a href="https://en.wikipedia.org/wiki/Knight%27s_tour">Knight's tour</a> visualizer using divide and conquer algorithm.</header>
+  <p><b>Tips:</b> An <i>n</i> * <i>n</i> chessboard has a <b>closed knight's tour</b> iff <i>n</i> ≥ 6 is even.</p>
+  <p><b>Note:</b> The pieces of <a href="https://en.wikipedia.org/wiki/Chess">chess</a> are placed inside a square, while the pieces of <a href="https://en.wikipedia.org/wiki/Xiangqi">Chinese chess</a> are placed on the intersections of the lines.</p>
+  <p>
+    <b>Half of the board size</b>:
+    <input type="number" id="boardSize" value="14" min="6" step="2" onkeyup="handleResize()" onchange="handleResize()" />
+    (Board size should be an even number).
+  </p>
+  <p><b>Time of a stroke</b> (ms): <input type="text" id="strokeTime" value="50" /></p>
+  <p>
+    <button onclick="startDraw()">Start</button>
+    <button onclick="stopDraw()">Stop</button>
+  </p>
+  <canvas id="canvas" width="500" height="500">Canvas not supported</canvas>
+  <footer>The source code can be found on <a href="https://github.com/chromezh/knights-tour-visualization">GitHub</a>.</footer>
+</body>
+</html>

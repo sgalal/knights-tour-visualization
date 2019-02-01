@@ -3,7 +3,7 @@
 var boardSize = 500;
 var timerId;
 
-window.onload = doCalc;
+window.onload = handleResize;
 
 /// Draw the chess board.
 /// @param n board size
@@ -98,16 +98,15 @@ function draw(n, ms) {
         timerId = setInterval(drawInner, ms);
 }
 
-function doCalc() {
-    var n = 2 * parseInt(document.getElementById("boardSize").value);
+function handleResize() {
+    var n = parseInt(document.getElementById("boardSize").value);
     if (n < 6)
         n = 6;
-    document.getElementById("sizeres").innerText = n + " * " + n;
     drawBoard(n);
 }
 
 function startDraw() {
-    var inputBoardSize = 2 * parseInt(document.getElementById("boardSize").value),
+    var inputBoardSize = parseInt(document.getElementById("boardSize").value),
         realBoardSize = inputBoardSize < 6 ? 6 : inputBoardSize,
         strokeTime = parseInt(document.getElementById("strokeTime").value);
     draw(realBoardSize, strokeTime);

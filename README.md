@@ -12,12 +12,9 @@ For an online version, see https://chromezh.github.io/knights-tour-visualization
 
 ## Build
 
-**Prerequisites**:
+**Prerequisite**: [Emscripten](http://kripken.github.io/emscripten-site/)
 
-* [make](http://www.gnu.org/software/make/)
-* [Emscripten](http://kripken.github.io/emscripten-site/)
-
-Run `make`. Then open `index.htm` in `docs` folder.
+Run `make` or `mingw32-make`. Then open `index.html`.
 
 ## Implementation
 

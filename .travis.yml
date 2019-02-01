@@ -12,5 +12,5 @@ before_install:
 
 script:
   - touch Makefile
-  - docker exec -it emscripten make docs/tour.js
+  - docker exec -it emscripten make
   - make
