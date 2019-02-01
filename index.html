@@ -8,23 +8,31 @@
   <script src="index.js"></script>
 <style>
 html { background-color: #eee; }
-body { margin: 1rem; }
+body { margin: 1.5em; }
 header { font-style: italic; }
+label { font-weight: bold; }
 a:not(:hover) { text-decoration: none; }
 </style>
 </head>
 <body>
   <h1>Knight's Tour Visualization</h1>
   <header>An online <a href="https://en.wikipedia.org/wiki/Knight%27s_tour">Knight's tour</a> visualizer using divide and conquer algorithm.</header>
-  <p><b>Tips:</b> An <i>n</i> * <i>n</i> chessboard has a <b>closed knight's tour</b> iff <i>n</i> ≥ 6 is even.</p>
-  <p><b>Note:</b> The pieces of <a href="https://en.wikipedia.org/wiki/Chess">chess</a> are placed inside a square, while the pieces of <a href="https://en.wikipedia.org/wiki/Xiangqi">Chinese chess</a> are placed on the intersections of the lines.</p>
   <p>
-    <b>Board size</b>:
+    <b>Tips:</b>
+    An <i>n</i> * <i>n</i> chessboard has a <b>closed knight's tour</b> iff <i>n</i> ≥ 6 is even.
+  </p>
+  <p>
+    <b>Note:</b>
+    The pieces of <a href="https://en.wikipedia.org/wiki/Chess">chess</a> are placed inside a square,
+    while the pieces of <a href="https://en.wikipedia.org/wiki/Xiangqi">Chinese chess</a> are placed on the intersections of the lines.
+  </p>
+  <p>
+    <label for="boardSize">Board size:</label>
     <input type="number" id="boardSize" value="14" min="6" step="2" onkeyup="handleResize()" onchange="handleResize()" />
     (Board size should be an even number).
   </p>
   <p>
-    <b>Time of a stroke</b> (ms):
+    <label for="strokeTime">Time of a stroke (ms):</label>
     <input type="number" id="strokeTime" value="50" min="0" />
   </p>
   <p>
