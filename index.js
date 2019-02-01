@@ -29,21 +29,22 @@ document.addEventListener('DOMContentLoaded', function() {
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
     ctx.lineWidth = 1;
-    drawBoard(parseInt(document.getElementById('boardSize').value));
+    drawEmptyBoard();
 });
 
-/// Draw an empty chess board.
-/// @param n board size
-function drawBoard(n) {
-    // Clear original board
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+function drawEmptyBoard() {
+    var bs = document.getElementById('boardSize');
+    if (bs.validity.valid) {
+        // Clear original board
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    var step = boardLen / (n - 1);
-
-    for (var i = 0; i < n; i++) {
-        drawLine(i, 0, i, n, step, 'black');  // Draw a horizontal line from (i, 0) to (i, n)
-        drawLine(0, i, n, i, step, 'black');  // Draw a vertical line from (0, i) to (n, i)
+        // Draw new board
+        var n = bs.value, step = boardLen / (n - 1);
+        for (var i = 0; i < n; i++) {
+            drawLine(i, 0, i, n, step, 'black');  // Draw a horizontal line from (i, 0) to (i, n)
+            drawLine(0, i, n, i, step, 'black');  // Draw a vertical line from (0, i) to (n, i)
+        }
     }
 }
 
@@ -80,8 +81,7 @@ function draw(n, ms) {
 }
 
 function startDraw() {
-    var bs = document.getElementById('boardSize'),
-        st = document.getElementById('strokeTime');
+    var bs = document.getElementById('boardSize'), st = document.getElementById('strokeTime');
     if (bs.validity.valid && st.validity.valid)
         draw(parseInt(bs.value), parseInt(st.value));
 }

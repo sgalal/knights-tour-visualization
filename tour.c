@@ -9,22 +9,6 @@
     extern "C" {
 #endif
 
-#define process(gridz, z, blockChoiceZ) \
-    do {   \
-        unsigned int __halve = gridz / 2;            \
-        unsigned int __mod = __halve % 2;            \
-        unsigned int __left = __halve - __mod;        \
-        unsigned int __right = __halve + __mod;        \
-        if (z < __left) {                \
-            gridz = __left;            \
-            blockChoiceZ = 1;        \
-        } else {                    \
-            gridz = __right;            \
-            z -= __left;                \
-            blockChoiceZ = 2;        \
-        }                              \
-    } while (0)
-
 /* Six pre-defined, closed, structured knight's tours. */
 
 static const unsigned int Grid6_6[6][6][2] =
@@ -130,18 +114,45 @@ static void getPointGridAttribute
         *pointAttribute_p = 8;
 
         do {
-            process(gridSizeX, gridLocX, blkChoiceX);
-            process(gridSizeY, gridLocY, blkChoiceY);
+            /* Process X */ {
+                const unsigned int halve = gridSizeX / 2;
+                const unsigned int mod_ = halve % 2;
+                const unsigned int left = halve - mod_;
+                const unsigned int right = halve + mod_;
+                if (gridLocX < left) {
+                    gridSizeX = left;
+                    blkChoiceX = 1;
+                } else {
+                    gridSizeX = right;
+                    gridLocX -= left;
+                    blkChoiceX = 2;
+                }
+            }
+
+            /* Process Y */ {
+                const unsigned int halve = gridSizeY / 2;
+                const unsigned int mod_ = halve % 2;
+                const unsigned int left = halve - mod_;
+                const unsigned int right = halve + mod_;
+                if (gridLocY < left) {
+                    gridSizeY = left;
+                    blkChoiceY = 1;
+                } else {
+                    gridSizeY = right;
+                    gridLocY -= left;
+                    blkChoiceY = 2;
+                }
+            }
 
             *pointAttribute_p =
                 blkChoiceX == 1 && blkChoiceY == 1 && gridLocX == gridSizeX - 3 && gridLocY == gridSizeY - 1 ? 0 :
                 blkChoiceX == 1 && blkChoiceY == 1 && gridLocX == gridSizeX - 1 && gridLocY == gridSizeY - 2 ? 1 :
-                blkChoiceX == 2 && blkChoiceY == 1 && gridLocX == 1 && gridLocY == gridSizeY - 3 ? 2 :
-                blkChoiceX == 2 && blkChoiceY == 1 && gridLocX == 0 && gridLocY == gridSizeY - 1 ? 3 :
-                blkChoiceX == 2 && blkChoiceY == 2 && gridLocX == 2 && gridLocY == 0 ? 4 :
-                blkChoiceX == 2 && blkChoiceY == 2 && gridLocX == 0 && gridLocY == 1 ? 5 :
-                blkChoiceX == 1 && blkChoiceY == 2 && gridLocX == gridSizeX - 2 && gridLocY == 2 ? 6 :
-                blkChoiceX == 1 && blkChoiceY == 2 && gridLocX == gridSizeX - 1 && gridLocY == 0 ? 7 : *pointAttribute_p;
+                blkChoiceX == 2 && blkChoiceY == 1 && gridLocX == 1             && gridLocY == gridSizeY - 3 ? 2 :
+                blkChoiceX == 2 && blkChoiceY == 1 && gridLocX == 0             && gridLocY == gridSizeY - 1 ? 3 :
+                blkChoiceX == 2 && blkChoiceY == 2 && gridLocX == 2             && gridLocY == 0             ? 4 :
+                blkChoiceX == 2 && blkChoiceY == 2 && gridLocX == 0             && gridLocY == 1             ? 5 :
+                blkChoiceX == 1 && blkChoiceY == 2 && gridLocX == gridSizeX - 2 && gridLocY == 2             ? 6 :
+                blkChoiceX == 1 && blkChoiceY == 2 && gridLocX == gridSizeX - 1 && gridLocY == 0             ? 7 : *pointAttribute_p;
         } while (!((gridSizeX <= 12 && gridSizeY <= 12) && (gridSizeX < 12 || gridSizeY < 12)));
 
         *gridSizeX_p = gridSizeX;
@@ -180,17 +191,17 @@ static void getPossibleNextPointOffsetType
 
     const unsigned int *p;
 
-    if(gridSizeX == 6 && gridSizeY == 6)
+    if (gridSizeX == 6 && gridSizeY == 6)
         p = Grid6_6[gridLocY][gridLocX];
-    else if(gridSizeX == 8 && gridSizeY == 6)
+    else if (gridSizeX == 8 && gridSizeY == 6)
         p = Grid6_8[gridLocY][gridLocX];
-    else if(gridSizeX == 8 && gridSizeY == 8)
+    else if (gridSizeX == 8 && gridSizeY == 8)
         p = Grid8_8[gridLocY][gridLocX];
-    else if(gridSizeX == 10 && gridSizeY == 8)
+    else if (gridSizeX == 10 && gridSizeY == 8)
         p = Grid8_10[gridLocY][gridLocX];
-    else if(gridSizeX == 10 && gridSizeY == 10)
+    else if (gridSizeX == 10 && gridSizeY == 10)
         p = Grid10_10[gridLocY][gridLocX];
-    else if(gridSizeX == 12 && gridSizeY == 10)
+    else if (gridSizeX == 12 && gridSizeY == 10)
         p = Grid10_12[gridLocY][gridLocX];
     else {  /* Grid size must always meet one of the designated grid sizes */
         #ifdef DEBUG

@@ -28,7 +28,7 @@ a:not(:hover) { text-decoration: none; }
   </p>
   <p>
     <label for="boardSize">Board size:</label>
-    <input type="number" id="boardSize" value="14" min="6" step="2" required onkeyup="drawBoard(value)" onchange="drawBoard(value)" />
+    <input type="number" id="boardSize" value="14" min="6" step="2" required onkeyup="drawEmptyBoard()" onchange="drawEmptyBoard()" />
     (Board size should be an even number).
   </p>
   <p>
