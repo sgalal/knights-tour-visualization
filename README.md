@@ -10,6 +10,16 @@ For an online version, see https://chromezh.github.io/knights-tour-visualization
 
 ![Knight's Tour on a 14\*14 board](demo/demo.jpg)
 
+## Project Structure
+
+Source files: `tour.h`, `tour.c`
+
+For test: `tour_tb.c`
+
+For web pages: `index.html`, `index.js`
+
+Build artefacts: `tour.js`, `tour.wasm`
+
 ## Build
 
 **Prerequisite**: [Emscripten](http://kripken.github.io/emscripten-site/)
