@@ -28,18 +28,18 @@ a:not(:hover) { text-decoration: none; }
   </p>
   <p>
     <label for="boardSize">Board size:</label>
-    <input type="number" id="boardSize" value="14" min="6" step="2" onkeyup="handleResize()" onchange="handleResize()" />
+    <input type="number" id="boardSize" value="14" min="6" step="2" required onkeyup="drawBoard(value)" onchange="drawBoard(value)" />
     (Board size should be an even number).
   </p>
   <p>
     <label for="strokeTime">Time of a stroke (ms):</label>
-    <input type="number" id="strokeTime" value="50" min="0" />
+    <input type="number" id="strokeTime" value="50" min="0" required />
   </p>
   <p>
     <button onclick="startDraw()">Start</button>
     <button onclick="stopDraw()">Stop</button>
   </p>
   <canvas id="canvas" width="500" height="500">Canvas not supported</canvas>
-  <footer>The source code can be found on <a href="https://github.com/chromezh/knights-tour-visualization">GitHub</a>.</footer>
+  <p>View source code on <a href="https://github.com/chromezh/knights-tour-visualization">GitHub</a>.</p>
 </body>
 </html>

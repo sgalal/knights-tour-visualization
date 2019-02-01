@@ -1,83 +1,64 @@
 "use strict";
 
-var boardSize = 500;
+var boardLen = 500;
+var canvas, ctx;
 var timerId;
 
-window.onload = handleResize;
-
-/// Draw the chess board.
-/// @param n board size
-function drawBoard(n) {
-    var c = document.getElementById("canvas");
-    var ctx = c.getContext("2d");
-    ctx.beginPath();
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, c.width, c.height);  
-    ctx.closePath();
-
-    ctx.lineWidth = 1;
-    var x, y;
-    var unitLen = boardSize/(n-1);
-
-    x = y = 0;
-    for (var i = 0; i < n; i++) {
-        ctx.beginPath();
-        ctx.strokeStyle = "black";
-        ctx.moveTo(x,y);
-        ctx.lineTo(boardSize,y);
-        ctx.stroke();
-        ctx.closePath();
-        y += unitLen;
-    }
-    x = y = 0;
-    for (var i = 0; i < n; i++) {
-        ctx.beginPath();
-        ctx.strokeStyle = "black";
-        ctx.moveTo(x,y);
-        ctx.lineTo(x,boardSize);
-        ctx.stroke();
-        ctx.closePath();
-        x += unitLen;
-    }
+function getNextPointSerialize(n, posX, posY, lastPosX, lastPosY) {
+    return Module.ccall('getNextPointSerialize', 'number', ['number', 'number', 'number', 'number', 'number'], [n, posX, posY, lastPosX, lastPosY]);
 }
 
-function drawPointOnCanvas(endX, endY) {
-    var c = document.getElementById("canvas");
-    var ctx = c.getContext("2d");
+function drawPoint(posX, posY, step) {
     ctx.beginPath();
-    ctx.arc(endX, endY, 3, 0, 360, false);
-    ctx.fillStyle = "blue";
+    ctx.arc(step * posX, step * posY, 3, 0, 360, false);
+    ctx.fillStyle = 'blue';
     ctx.fill();
     ctx.closePath();
 }
 
-function drawLineOnCanvas(beginX, beginY, endX, endY) {
-    var c = document.getElementById("canvas");
-    var ctx = c.getContext("2d");
+function drawLine(posX, posY, nextPosX, nextPosY, step, color) {
     ctx.beginPath();
-    ctx.moveTo(beginX, beginY);
-    ctx.lineTo(endX, endY);
-    ctx.strokeStyle = "red";
-    ctx.lineWidth = 1;
+    ctx.moveTo(step * posX, step * posY);
+    ctx.lineTo(step * nextPosX, step * nextPosY);
+    ctx.strokeStyle = color;
     ctx.stroke();
     ctx.closePath();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    canvas = document.getElementById('canvas');
+    ctx = canvas.getContext('2d');
+    ctx.lineWidth = 1;
+    drawBoard(parseInt(document.getElementById('boardSize').value));
+});
+
+/// Draw an empty chess board.
+/// @param n board size
+function drawBoard(n) {
+    // Clear original board
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    var step = boardLen / (n - 1);
+
+    for (var i = 0; i < n; i++) {
+        drawLine(i, 0, i, n, step, 'black');  // Draw a horizontal line from (i, 0) to (i, n)
+        drawLine(0, i, n, i, step, 'black');  // Draw a vertical line from (0, i) to (n, i)
+    }
 }
 
 /// @param n board size
 /// @param ms sleep time after drawing a line, in ms
 function draw(n, ms) {
-    var unitLen = boardSize / (n - 1);
-    var posX = 2, posY = 0,
-        lastPosX = 0, lastPosY = 1;
+    var step = boardLen / (n - 1);
+    var posX = 2, posY = 0, lastPosX = 0, lastPosY = 1;
 
     function drawInner() {
-        var nextPos = Module.ccall("getNextPointSerialize", "number", ["number", "number", "number", "number", "number"], [n, posX, posY, lastPosX, lastPosY]);
-        var nextPosX = parseInt(nextPos / n), nextPosY = nextPos % n;
-        var beginX = unitLen * posX, beginY = unitLen * posY,
-            endX = unitLen * nextPosX, endY = unitLen * nextPosY;
+        var nextPos = getNextPointSerialize(n, posX, posY, lastPosX, lastPosY),
+            nextPosX = nextPos / n | 0, nextPosY = nextPos % n;
 
-        drawPointOnCanvas(beginX, beginY);
-        drawLineOnCanvas(beginX, beginY, endX, endY);
+        drawPoint(posX, posY, step);
+        drawLine(posX, posY, nextPosX, nextPosY, step, 'red');
 
         if (nextPosX == 2 && nextPosY == 0) /* the Knight has returned to the beginning point */ {
             stopDraw();  // Clear timer, for the case ms != 0
@@ -98,18 +79,11 @@ function draw(n, ms) {
         timerId = setInterval(drawInner, ms);
 }
 
-function handleResize() {
-    var n = parseInt(document.getElementById("boardSize").value);
-    if (n < 6)
-        n = 6;
-    drawBoard(n);
-}
-
 function startDraw() {
-    var inputBoardSize = parseInt(document.getElementById("boardSize").value),
-        realBoardSize = inputBoardSize < 6 ? 6 : inputBoardSize,
-        strokeTime = parseInt(document.getElementById("strokeTime").value);
-    draw(realBoardSize, strokeTime);
+    var bs = document.getElementById('boardSize'),
+        st = document.getElementById('strokeTime');
+    if (bs.validity.valid && st.validity.valid)
+        draw(parseInt(bs.value), parseInt(st.value));
 }
 
 function stopDraw() {
