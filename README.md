@@ -1,12 +1,12 @@
 # Knight's Tour Visualization
 
-[![Build Status](https://travis-ci.org/chromezh/knights-tour-visualization.svg?branch=master)](https://travis-ci.org/chromezh/knights-tour-visualization) [![Build status](https://ci.appveyor.com/api/projects/status/a3t55hc7dcxlwlg2?svg=true)](https://ci.appveyor.com/project/chromezh/knights-tour-visualization) [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
+[![Build Status](https://travis-ci.org/sgalal/knights-tour-visualization.svg?branch=master)](https://travis-ci.org/sgalal/knights-tour-visualization) [![Build status](https://ci.appveyor.com/api/projects/status/a3t55hc7dcxlwlg2?svg=true)](https://ci.appveyor.com/project/chromezh/knights-tour-visualization) [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
 
-An online Knight's tour visualizer using divide and conquer algorithm.
+_An online [Knight's tour](https://en.wikipedia.org/wiki/Knight%27s_tour) visualizer using divide and conquer algorithm_
 
 This project uses [Emscripten](http://kripken.github.io/emscripten-site/) to compile C code into JavaScript.
 
-For an online version, see https://chromezh.github.io/knights-tour-visualization/.
+For an online version, see https://sgalal.github.io/knights-tour-visualization/.
 
 ![Knight's Tour on a 14\*14 board](demo/demo.jpg)
 
