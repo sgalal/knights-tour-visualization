@@ -15,7 +15,8 @@ before_build:
 - docker run -di --name emscripten -v $(pwd):/src trzeci/emscripten:sdk-incoming-64bit bash
 
 build_script:
-- docker exec -i emscripten emcc -std=c11 -Weverything -Werror -Wno-unused-function -Wno-language-extension-token -O2 -s ASSERTIONS=1 -s EXPORTED_FUNCTIONS='["_getNextPointSerialize"]' -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]' -o $(pwd)/../out/tour.js tour.c
+- docker exec -i emscripten emcc -std=c11 -Weverything -Werror -Wno-unused-function -Wno-language-extension-token -O2 -s ASSERTIONS=1 -s EXPORTED_FUNCTIONS='["_getNextPointSerialize"]' -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]' -o tour.js tour.c
+- mv -f tour.js tour.wasm ../out
 
 test_script:
 - clang -std=c11 -Weverything -Werror -Wno-language-extension-token -DDEBUG -o ../out/tour tour.c tour_tb.c
@@ -28,7 +29,7 @@ on_success:
 - git config --global user.name "sgalal"
 - git checkout gh-pages
 - git checkout master -- index.html index.js
-- mv ../out/tour.js ../out/tour.wasm .
+- mv -f ../out/tour.js ../out/tour.wasm .
 - git add .
 - git commit -m "Deploy $APPVEYOR_REPO_COMMIT by AppVeyor"
 - git push origin gh-pages
