@@ -1,12 +1,34 @@
+image: ubuntu
+
+services:
+- docker
+
+branches:
+  only:
+    - master
+
+environment:
+  access_token:
+    secure: 1Ep5ZXTk0f1AbqY1xVTGnHWDEEBnSm2RnlExqhH0AsAPS1cRYl9aJRHDonSioUOD
+
 before_build:
-  - git clone https://github.com/juj/emsdk.git C:\emsdk
-  - C:\emsdk\emsdk install latest
-  - C:\emsdk\emsdk activate --global latest
-  - C:\emsdk\emsdk_env.bat
-  - set PATH=%PATH%;C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\mingw64\bin
+- docker run -dit --name emscripten -v $(pwd):/src trzeci/emscripten:sdk-incoming-64bit bash
 
 build_script:
-  - mingw32-make clean
-  - mingw32-make
-  - mingw32-make test
-  - git diff
+- docker exec -it emscripten emcc -std=c11 -Weverything -Werror -Wno-unused-function -Wno-language-extension-token -O2 -s ASSERTIONS=1 -s EXPORTED_FUNCTIONS='["_getNextPointSerialize"]' -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]' -o ../out/tour.js tour.c
+
+test_script:
+- clang -std=c11 -Weverything -Werror -Wno-language-extension-token -DDEBUG -o ../out/tour tour.c tour_tb.c
+- ../out/tour
+
+on_success:
+- git config --global credential.helper store
+- echo "https://${access_token}:x-oauth-basic@github.com" >> ~/.git-credentials
+- git config --global user.email "32255369+chromezh@users.noreply.github.com"
+- git config --global user.name "sgalal"
+- git checkout gh-pages
+- git checkout master -- index.html index.js
+- mv ../out/tour.js ../out/tour.wasm .
+- git add .
+- git commit -m "Deploy ${SHA} by AppVeyor"
+- git push origin gh-pages
