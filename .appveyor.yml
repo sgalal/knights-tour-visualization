@@ -32,5 +32,8 @@ on_success:
 - git checkout master -- index.html index.js
 - mv -f ../out/tour.js ../out/tour.wasm .
 - git add .
-- git commit -m "Deploy $APPVEYOR_REPO_COMMIT by AppVeyor"
-- git push origin gh-pages
+- |
+  if [ -n "$(git status --porcelain)" ]; then
+    git commit -m "Deploy $APPVEYOR_REPO_COMMIT by AppVeyor"
+    git push origin gh-pages
+  fi
