@@ -1,6 +1,6 @@
 # Knight's Tour Visualization
 
-[![Build Status](https://travis-ci.org/sgalal/knights-tour-visualization.svg?branch=master)](https://travis-ci.org/sgalal/knights-tour-visualization) [![Build status](https://ci.appveyor.com/api/projects/status/a3t55hc7dcxlwlg2?svg=true)](https://ci.appveyor.com/project/chromezh/knights-tour-visualization) [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
+[![Build status](https://ci.appveyor.com/api/projects/status/a3t55hc7dcxlwlg2?svg=true)](https://ci.appveyor.com/project/chromezh/knights-tour-visualization) [![Maintainability](https://api.codeclimate.com/v1/badges/31c1219b5c34c6108000/maintainability)](https://codeclimate.com/github/sgalal/knights-tour-visualization/maintainability)
 
 _An online [Knight's tour](https://en.wikipedia.org/wiki/Knight%27s_tour) visualizer using divide and conquer algorithm_
 
@@ -12,19 +12,15 @@ For an online version, see https://sgalal.github.io/knights-tour-visualization/.
 
 ## Project Structure
 
-Source files: `tour.h`, `tour.c`
-
-For test: `tour_tb.c`
-
-For web pages: `index.html`, `index.js`
-
-Build artefacts: `tour.js`, `tour.wasm`
+* Source files: `tour.h`, `tour.c`
+* For test: `tour_tb.c`
+* For web pages: `index.html`, `index.js`
 
 ## Build
 
-**Prerequisite**: [Emscripten](http://kripken.github.io/emscripten-site/)
-
-Run `make` or `mingw32-make`. Then open `index.html`.
+* **Prerequisite**: [Emscripten](http://kripken.github.io/emscripten-site/)
+* **Build**: `emcc -std=c11 -Weverything -Werror -Wno-unused-function -Wno-language-extension-token -O2 -s ASSERTIONS=1 -s EXPORTED_FUNCTIONS='["_getNextPointSerialize"]' -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]' -o tour.js tour.c`
+* **Test**: `clang -std=c11 -Weverything -Werror -Wno-language-extension-token -DDEBUG -o tour tour.c tour_tb.c`
 
 ## Implementation
 
