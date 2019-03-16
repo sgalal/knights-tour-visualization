@@ -1,4 +1,4 @@
-image: ubuntu
+image: ubuntu1804
 
 services:
 - docker
@@ -16,6 +16,7 @@ before_build:
 
 build_script:
 - docker exec -i emscripten emcc -std=c11 -Weverything -Werror -Wno-unused-function -Wno-language-extension-token -O2 -s ASSERTIONS=1 -s EXPORTED_FUNCTIONS='["_getNextPointSerialize"]' -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]' -o tour.js tour.c
+- mkdir ../out
 - mv -f tour.js tour.wasm ../out
 
 test_script:
