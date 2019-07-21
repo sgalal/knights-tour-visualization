@@ -29,7 +29,7 @@ on_success:
 - git config --global user.email "32255369+chromezh@users.noreply.github.com"
 - git config --global user.name "sgalal"
 - git checkout gh-pages
-- git checkout master -- index.html index.js index.css
+- git checkout master -- index.html index.js index.css forkme_right_red_aa0000.png
 - mv -f ../out/tour.js ../out/tour.wasm .
 - git add .
 - |
