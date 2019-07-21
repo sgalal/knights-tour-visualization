@@ -11,7 +11,7 @@ function getNextPointSerialize(n, posX, posY, lastPosX, lastPosY) {
 function drawPoint(posX, posY, step) {
     ctx.beginPath();
     ctx.arc(step * posX, step * posY, 3, 0, 360, false);
-    ctx.fillStyle = 'blue';
+    ctx.fillStyle = 'royalblue';
     ctx.fill();
     ctx.closePath();
 }
@@ -59,7 +59,7 @@ function draw(n, ms) {
             nextPosX = nextPos / n | 0, nextPosY = nextPos % n;
 
         drawPoint(posX, posY, step);
-        drawLine(posX, posY, nextPosX, nextPosY, step, 'red');
+        drawLine(posX, posY, nextPosX, nextPosY, step, 'deeppink');
 
         if (nextPosX == 2 && nextPosY == 0) /* the Knight has returned to the beginning point */ {
             stopDraw();  // Clear timer, for the case ms != 0
