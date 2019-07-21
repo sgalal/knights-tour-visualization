@@ -1,0 +1,47 @@
+html, body {
+	font-family: 'Montserrat', sans-serif;
+}
+
+body {
+	background-color: #ecf9ff;
+	margin: 2em auto;
+	max-width: 42em;
+	padding: 0 1em;
+}
+
+p {
+	line-height: 1.5em;
+}
+
+header {
+	font-style: italic;
+}
+
+.center {
+	text-align: center;
+}
+
+h1 {
+	margin: 1em 0;
+}
+
+header {
+	margin: 1.5em 0;
+}
+
+label {
+	font-weight: bold;
+}
+
+a {
+	color: dodgerblue;
+	text-decoration: none;
+}
+ 
+a:hover {
+	color: deeppink;
+}
+
+.pure-button-primary {
+	background-color: dodgerblue !important;
+}

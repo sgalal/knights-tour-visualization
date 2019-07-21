@@ -1,5 +1,5 @@
 #include <assert.h>
-#include "tour.h"
+#include "../src/tour.h"
 
 #ifdef DEBUG
     #include <stdio.h>

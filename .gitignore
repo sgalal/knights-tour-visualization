@@ -1,1 +1,4 @@
-*.exe
+/tour.exe
+/tour
+/tour.js
+/tour.wasm

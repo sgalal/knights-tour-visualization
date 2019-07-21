@@ -12,15 +12,15 @@ For an online version, see https://sgalal.github.io/knights-tour-visualization/.
 
 ## Project Structure
 
-* Source files: `tour.h`, `tour.c`
-* For test: `tour_tb.c`
-* For web pages: `index.html`, `index.js`
+* Source files: `src`
+* For test: `test`
+* For web pages: `index.html`, `index.js`, `index.css`
 
 ## Build
 
 * **Prerequisite**: [Emscripten](http://kripken.github.io/emscripten-site/)
-* **Build**: `emcc -std=c11 -Weverything -Werror -Wno-unused-function -Wno-language-extension-token -O2 -s ASSERTIONS=1 -s EXPORTED_FUNCTIONS='["_getNextPointSerialize"]' -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]' -o tour.js tour.c`
-* **Test**: `clang -std=c11 -Weverything -Werror -Wno-language-extension-token -DDEBUG -o tour tour.c tour_tb.c`
+* **Build**: `emcc -std=c11 -Weverything -Werror -Wno-unused-function -Wno-language-extension-token -O2 -s ASSERTIONS=1 -s EXPORTED_FUNCTIONS='["_getNextPointSerialize"]' -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]' -o tour.js src/tour.c`
+* **Test**: `clang -std=c11 -Weverything -Werror -Wno-language-extension-token -DDEBUG -o tour src/tour.c test/tour_tb.c && ./tour`
 
 ## Implementation
 
