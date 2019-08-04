@@ -1,3 +1,5 @@
+<img alt="Knight's Tour on a 14*14 board" src="demo/demo.png" style="float: right; height: 275px"/>
+
 # Knight's Tour Visualization
 
 [![Build status](https://ci.appveyor.com/api/projects/status/a3t55hc7dcxlwlg2?svg=true)](https://ci.appveyor.com/project/chromezh/knights-tour-visualization) [![Maintainability](https://api.codeclimate.com/v1/badges/31c1219b5c34c6108000/maintainability)](https://codeclimate.com/github/sgalal/knights-tour-visualization/maintainability)
@@ -7,8 +9,6 @@ _An online [Knight's tour](https://en.wikipedia.org/wiki/Knight%27s_tour) visual
 This project uses [Emscripten](http://kripken.github.io/emscripten-site/) to compile C code into JavaScript.
 
 For an online version, see https://sgalal.github.io/knights-tour-visualization/.
-
-![Knight's Tour on a 14\*14 board](demo/demo.png)
 
 ## Project Structure
 
