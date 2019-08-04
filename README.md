@@ -8,7 +8,7 @@ This project uses [Emscripten](http://kripken.github.io/emscripten-site/) to com
 
 For an online version, see https://sgalal.github.io/knights-tour-visualization/.
 
-![Knight's Tour on a 14\*14 board](demo/demo.jpg)
+![Knight's Tour on a 14\*14 board](demo/demo.png)
 
 ## Project Structure
 
